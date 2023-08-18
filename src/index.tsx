@@ -1,9 +1,18 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import ReactDOM from 'react-dom/client';
+import {App} from './App';
+import {GlobalStyled} from './styled/GlobalStyled';
+import {BrowserRouter} from 'react-router-dom';
 
-ReactDOM.render(
-    <App />,
-  document.getElementById('root')
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
+
+root.render(
+    <div>
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+        <GlobalStyled/>
+        <div>Hello world</div>
+    </div>,
 );
