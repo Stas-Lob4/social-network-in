@@ -13,6 +13,5 @@ root.render(
             <App />
         </BrowserRouter>
         <GlobalStyled/>
-        <div>Hello world</div>
     </div>,
 );

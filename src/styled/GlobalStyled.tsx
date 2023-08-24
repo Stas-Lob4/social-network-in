@@ -11,7 +11,8 @@ export const GlobalStyled = createGlobalStyle`
 
   body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    color: white;
+    font-family: 'Inknut Antiqua', serif,-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -20,6 +21,10 @@ export const GlobalStyled = createGlobalStyle`
   
   a{
     text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration-line: underline;
   }
 
   ul{
