@@ -65,7 +65,6 @@ export const AppMainRoutesStyled = styled.div`
 `
 
 export const AppMainNavbarStyled = styled.div`
-  
   max-width: 150px;
   width: 100%;
 `

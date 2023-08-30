@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {Container} from '../../component/Container';
 import {FlexWrap} from '../../component/FlexWrap';
 import {Button} from '../../component/Button';
-import Logo from './../../styled/img/svg/logo.svg'
+import Logo from '../../assets/svg/logo.svg'
 import {Link} from 'react-router-dom';
 
 export const Header = () => {
