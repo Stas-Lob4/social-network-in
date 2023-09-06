@@ -1,10 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
-import {Container} from '../../component/Container';
 import {FlexWrap} from '../../component/FlexWrap';
-import {Button} from '../../component/Button';
 import Logo from '../../assets/svg/logo.svg'
-import {Link} from 'react-router-dom';
+import {BoxLogo, ButtonStyled, HeaderStyled, Image} from './HeaderStyled';
 
 export const Header = () => {
     return (
@@ -20,32 +17,5 @@ export const Header = () => {
     )
 }
 
-const HeaderStyled = styled.div`
-  height: 50px;
-  align-content: center;
-`
-export const BoxLogo = styled(Link)`
-  display: flex;
-  align-items: center;
-  color: white;
-`
-
-export const Image = styled.img`
-  height: 30px;
-  margin: auto 10px;
-`
-export const ButtonStyled = styled.button`
-  margin-right: 10px;
-  height: 30px;
-  width: 100px;
-  background: transparent;
-  border-radius: 5px;
-  border: 1px solid red;
-  color: white;
-  &:hover {
-    background: red;
-    text-decoration-line: underline;
-  }
-`
 
 

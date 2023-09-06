@@ -6,7 +6,7 @@ export const Navbar = () => {
     return (
         <NavbarStyled>
                 <li><Link to={"/"}>My profile</Link></li>
-                <li><Link to={"/message"}>Message</Link></li>
+                <li><Link to={"/dialogs"}>Dialogs</Link></li>
                 <li><Link to={"/friend"}>Friends</Link></li>
                 <li><Link to={"/#"}>Groups</Link></li>
                 <li><Link to={"/#"}>Settings</Link></li>

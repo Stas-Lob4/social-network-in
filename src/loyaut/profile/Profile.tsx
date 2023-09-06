@@ -23,8 +23,13 @@ export const BorderImage = styled.img`
   border: 1px solid transparent;
 `
 
-export const ImageProfile = styled.image`
-
+type ImageProfilePropsType = {
+    width?: string
+    height?: string
+}
+export const ImageProfile = styled.image<ImageProfilePropsType>`
+  width: {(props) => props.width};
+  height: {(props) => props.height};
 `
 
 export const ProfileStyled = styled.div`
