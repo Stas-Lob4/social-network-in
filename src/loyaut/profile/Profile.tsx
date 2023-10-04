@@ -1,9 +1,18 @@
-import React from 'react';
+import React, {FC} from 'react';
 import styled from 'styled-components';
 import borderImage from './../../assets/img/border.png'
-import {MyPost} from './my-post/MyPost';
+import {MyPosts} from './my-post/MyPosts';
+import {ProfilePageType} from '../../redux/state';
 
-export const Profile = () => {
+
+type PropsType = {
+    stateProfile: ProfilePageType
+    addPost: (text: string) => void
+    updateNewPostText: (text: string) => void
+}
+export const Profile: FC<PropsType> = ({stateProfile, addPost, updateNewPostText}) => {
+
+
     return (
         <ProfileStyled>
             <BorderImage src={borderImage}/>
@@ -11,7 +20,7 @@ export const Profile = () => {
             <div>
                 Information to Profile
             </div>
-            <MyPost />
+            <MyPosts addPost={addPost} stateProfile={stateProfile} updateNewPostText={updateNewPostText}/>
         </ProfileStyled>
     );
 };

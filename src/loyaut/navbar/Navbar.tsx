@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 
 export const Navbar = () => {
     return (
         <NavbarStyled>
-                <li><Link to={"/"}>My profile</Link></li>
-                <li><Link to={"/dialogs"}>Dialogs</Link></li>
+                <li><NavLink to={"/"}>My profile</NavLink></li>
+                <li><NavLink to={"/dialogs"}>Dialogs</NavLink></li>
                 <li><Link to={"/friend"}>Friends</Link></li>
                 <li><Link to={"/#"}>Groups</Link></li>
                 <li><Link to={"/#"}>Settings</Link></li>

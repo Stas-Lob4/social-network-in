@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {Header} from './loyaut/header/Header';
 import {Footer} from './loyaut/footer/Footer';
 import {Navbar} from './loyaut/navbar/Navbar';
@@ -13,8 +13,14 @@ import {
     AppStyled
 } from './AppStyled';
 import {Dialogs} from './loyaut/dialogs/Dialogs';
+import {StateType, StoreType} from './redux/state';
 
-export function App() {
+
+type AppPropsType = {
+    state: StateType
+    store: StoreType
+}
+export const App: FC<AppPropsType> = ({state, store}) =>  {
     return (
         <AppStyled>
             <AppHeaderStyled>
@@ -26,8 +32,10 @@ export function App() {
                 </AppMainNavbarStyled>
                 <AppMainRoutesStyled>
                     <Routes>
-                        <Route path={'/'} element={<Profile/>}/>
-                        <Route path={'/dialogs'} element={<Dialogs/>}/>
+                        <Route path={'/'} element={<Profile stateProfile={state.profilePage}
+                                                            addPost={store.addPost.bind(store)}
+                                                            updateNewPostText={store.updateNewPostText.bind(store)}/>}/>
+                        <Route path={'/dialogs/*'} element={<Dialogs users={state.users}/>}/>
                     </Routes>
                 </AppMainRoutesStyled>
             </AppMainStyled>

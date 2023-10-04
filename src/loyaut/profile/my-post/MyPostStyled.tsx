@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 
 export const InputBox = styled.div`
-  position: fixed;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `
 export const TextArea = styled.textarea`
   width: 500px;
@@ -14,17 +17,13 @@ export const TextArea = styled.textarea`
 `
 
 export const ButtonInput = styled.button`
-  position: absolute;
   height: 30px;
   width: 30px;
-  top: 10px;
-  right: 10px;
-  background-color: transparent;
-  border-radius: 50%;
+  background-color: white;
+  border-radius: 5px;
   border: none;
-  color: white;
+  color: black;
   &:hover{
-    background-color: white;
-    color: black;
+    opacity: 0.5;
   }
 `
