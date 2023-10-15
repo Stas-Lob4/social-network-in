@@ -1,23 +1,27 @@
 import React, {ChangeEvent} from 'react';
 import {Post} from './Post';
 import {ButtonInput, InputBox, TextArea} from './MyPostStyled';
-import {ProfilePageType} from '../../../redux/state';
+import {ActionType, ProfilePageType} from '../../../redux/state';
+import {addPostAC, updateNewPostText} from '../../../redux/profile-reducer';
 
 type MyPostPropsType = {
     stateProfile: ProfilePageType
-    addPost: (text: string) => void
-    updateNewPostText: (text: string) => void
+    dispatch: (action: ActionType) => void
 }
-export const MyPosts: React.FC<MyPostPropsType> = ({stateProfile, addPost, updateNewPostText}) => {
+export const MyPosts: React.FC<MyPostPropsType> = ({stateProfile, dispatch}) => {
 
     const onClickHandler = () => {
         if(stateProfile.newPostText !== ''){
-            addPost(stateProfile.newPostText)
+            dispatch(addPostAC())
         }
     }
 
-    const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        updateNewPostText(e.currentTarget.value)
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        const newText = e.currentTarget.value;
+
+        if (newText !== '') {
+            dispatch(updateNewPostText(newText));
+        }
     }
 
     const mapMyPosts = stateProfile.posts.map(m => <Post id={m.id} text={m.text} likeCount={m.likeCount}/>)

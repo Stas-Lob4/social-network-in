@@ -1,4 +1,6 @@
 import {v1} from 'uuid';
+import {ActionDialogReducerType, dialogReducer} from './dialog-reducer';
+import {ActionProfileReducerType, profileReducer} from './profile-reducer';
 
 // export const state: StateType = {
 //     profilePage: {
@@ -65,14 +67,20 @@ import {v1} from 'uuid';
 // }
 
 export type UsersType = {
-    id: string
-    name: string
-    message: string[]
-}[]
+    [id: string]: {
+        name: string
+        message: MessageType[]
+        newMessage: string
+    }
+}
 export type PostType = {
     id: string
     text: string
     likeCount: number
+}
+export type MessageType = {
+    id: string
+    text: string
 }
 export type StateType = {
     profilePage: ProfilePageType
@@ -92,8 +100,12 @@ export type StoreType = {
     updateNewPostText: (text: string) => void
     _rerenderEntireTree: (state: StateType) => void
     subscribe: (observer: (state: StateType) => void) => void
+    dispatch: (action: ActionType) => void
 }
 
+export const initValueMessage = v1()
+//костиль который принимает два редюсера \|/
+export type ActionType = ActionProfileReducerType | ActionDialogReducerType
 export let store: StoreType = {
     _state: {
         profilePage: {
@@ -111,50 +123,91 @@ export let store: StoreType = {
             {id: v1(), text: 'Hello World!', likeCount: 5},
             {id: v1(), text: 'Hello World!', likeCount: 1},
         ],
-        users: [
-            {
-                id: v1(),
+        users: {
+            [initValueMessage]: {
                 name: 'Stas',
-                message: ['Hello Stas', 'Hi', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero']
+                message: [
+                    {id: v1(), text: 'Hello Stas'},
+                    {id: v1(), text: 'Hi'},
+                    {
+                        id: v1(),
+                        text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero'
+                    }],
+                newMessage: ''
             },
-            {
-                id: v1(),
+            [v1()]: {
                 name: 'Petia',
-                message: ['Hello Petia', 'Hi', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero']
+                message: [
+                    {id: v1(), text: 'Hello Petia'},
+                    {id: v1(), text: 'Hi'},
+                    {
+                        id: v1(),
+                        text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero'
+                    }
+                ],
+                newMessage: ''
             },
-            {
-                id: v1(),
+            [v1()]: {
                 name: 'Vasia',
-                message: ['Hello Vasia', 'Hi', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero']
+                message: [
+                    {id: v1(), text: 'Hello Vasia'},
+                    {id: v1(), text: 'Hi'},
+                    {
+                        id: v1(),
+                        text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero'
+                    }
+                ],
+                newMessage: ''
             },
-            {
-                id: v1(),
+            [v1()]: {
                 name: 'Kateryna',
-                message: ['Hello Kateryna', 'Hi', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero']
+                message: [
+                    {id: v1(), text: 'Hello Kateryna'},
+                    {id: v1(), text: 'Hi'},
+                    {
+                        id: v1(),
+                        text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero'
+                    }
+                ],
+                newMessage: ''
             },
-            {
-                id: v1(),
+            [v1()]: {
                 name: 'Yana',
-                message: ['Hello Yana', 'Hi', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero']
-            }
-        ]
+                message: [
+                    {id: v1(), text: 'Hello Yana'},
+                    {id: v1(), text: 'Hi'},
+                    {
+                        id: v1(),
+                        text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero'
+                    }
+                ],
+                newMessage: ''
+            },
+        }
+    },
+    _rerenderEntireTree() {
     },
     getState() {
         return this._state
     },
-    addPost () {
-        if(this._state.profilePage.newPostText.trim() !== ''){
+    addPost() {
+        if (this._state.profilePage.newPostText.trim() !== '') {
             this._state.profilePage.posts.push({id: v1(), text: this._state.profilePage.newPostText, likeCount: 0})
             this._rerenderEntireTree(this._state)
             this._state.profilePage.newPostText = ''
         }
     },
-    updateNewPostText (text: string)  {
+    updateNewPostText(text: string) {
         this._state.profilePage.newPostText = text
         this._rerenderEntireTree(this._state)
     },
-    _rerenderEntireTree () {},
-    subscribe (observer: (state: StateType) => void)  {
+    subscribe(observer: (state: StateType) => void) {
         this._rerenderEntireTree = observer
+    },
+    dispatch(action: ActionType ) {
+        this._state.profilePage = profileReducer(this._state.profilePage, action)
+        this._state.users = dialogReducer(this._state.users, action)
+        this._rerenderEntireTree(this._state)
     }
 }
+

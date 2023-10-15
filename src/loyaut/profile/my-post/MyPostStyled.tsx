@@ -6,7 +6,7 @@ export const InputBox = styled.div`
   align-items: center;
   gap: 10px;
 `
-export const TextArea = styled.textarea`
+export const TextArea = styled.input`
   width: 500px;
   height: 50px;
   background-color: transparent;

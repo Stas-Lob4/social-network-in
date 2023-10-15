@@ -4,12 +4,14 @@ import {BrowserRouter} from 'react-router-dom';
 import {App} from './App';
 import {GlobalStyled} from './styled/GlobalStyled';
 import React from 'react';
- let rerenderEntireTree = (state: StateType) => {
-    const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+let rerenderEntireTree = (state: StateType) => {
     root.render(
         <div>
             <BrowserRouter>
-                <App state={store.getState()} store={store}/>
+                <App state={store.getState()} dispatch={store.dispatch.bind(store)}/>
             </BrowserRouter>
             <GlobalStyled/>
         </div>

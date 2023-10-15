@@ -13,14 +13,14 @@ import {
     AppStyled
 } from './AppStyled';
 import {Dialogs} from './loyaut/dialogs/Dialogs';
-import {StateType, StoreType} from './redux/state';
+import {ActionType, StateType, StoreType} from './redux/state';
 
 
 type AppPropsType = {
     state: StateType
-    store: StoreType
+    dispatch: (action: ActionType) => void
 }
-export const App: FC<AppPropsType> = ({state, store}) =>  {
+export const App: FC<AppPropsType> = ({state, dispatch}) =>  {
     return (
         <AppStyled>
             <AppHeaderStyled>
@@ -33,9 +33,8 @@ export const App: FC<AppPropsType> = ({state, store}) =>  {
                 <AppMainRoutesStyled>
                     <Routes>
                         <Route path={'/'} element={<Profile stateProfile={state.profilePage}
-                                                            addPost={store.addPost.bind(store)}
-                                                            updateNewPostText={store.updateNewPostText.bind(store)}/>}/>
-                        <Route path={'/dialogs/*'} element={<Dialogs users={state.users}/>}/>
+                                                            dispatch = {dispatch}/>}/>
+                        <Route path={'/dialogs/*'} element={<Dialogs users={state.users} dispatch={dispatch}/>}/>
                     </Routes>
                 </AppMainRoutesStyled>
             </AppMainStyled>

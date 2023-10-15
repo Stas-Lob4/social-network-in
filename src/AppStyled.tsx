@@ -5,9 +5,8 @@ export const AppStyled = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: #141414;
-  height: 100%;
+  height: 100vh;
 `
-
 export const AppHeaderStyled = styled.header`
   max-width: 1150px;
   min-height: 50px;
@@ -19,7 +18,7 @@ export const AppMainStyled = styled.main`
   flex-direction: row;
   max-width: 1150px;
   width: 100%;
-  min-height: 100%;
+  height: 100vh;
 `
 export const AppFooterStyled = styled.footer`
   width: 100%;

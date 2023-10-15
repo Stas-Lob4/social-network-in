@@ -2,15 +2,14 @@ import React, {FC} from 'react';
 import styled from 'styled-components';
 import borderImage from './../../assets/img/border.png'
 import {MyPosts} from './my-post/MyPosts';
-import {ProfilePageType} from '../../redux/state';
+import {ActionType, ProfilePageType} from '../../redux/state';
 
 
 type PropsType = {
     stateProfile: ProfilePageType
-    addPost: (text: string) => void
-    updateNewPostText: (text: string) => void
+    dispatch: (action: ActionType) => void
 }
-export const Profile: FC<PropsType> = ({stateProfile, addPost, updateNewPostText}) => {
+export const Profile: FC<PropsType> = ({stateProfile, dispatch}) => {
 
 
     return (
@@ -20,7 +19,7 @@ export const Profile: FC<PropsType> = ({stateProfile, addPost, updateNewPostText
             <div>
                 Information to Profile
             </div>
-            <MyPosts addPost={addPost} stateProfile={stateProfile} updateNewPostText={updateNewPostText}/>
+            <MyPosts stateProfile={stateProfile} dispatch={dispatch}/>
         </ProfileStyled>
     );
 };

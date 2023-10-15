@@ -1,18 +1,19 @@
 import React, {FC, useState} from 'react';
 import styled from 'styled-components';
 import {Dialog, DialogItem, DialogPropsType} from './Dialog';
-import {UsersType} from '../../redux/state';
+import {ActionType, initValueMessage, UsersType} from '../../redux/state';
 
 
 type DialogsPropsType = {
     users: UsersType
+    dispatch: (action: ActionType) => void
 }
-export const Dialogs: FC<DialogsPropsType> = ({users}) => {
-    const [userMessageId, setUserMessageId] = useState('');
+export const Dialogs: FC<DialogsPropsType> = ({users, dispatch}) => {
+    const [userMessageId, setUserMessageId] = useState(initValueMessage);
     const onClickHandler = (id: string) => setUserMessageId(id)
     return <DialogsStyled>
         <DialogItem users={users} onClickCallBack={onClickHandler}/>
-        <Dialog users={users} id={userMessageId}/>
+        <Dialog users={users} id={userMessageId} dispatch={dispatch}/>
     </DialogsStyled>
 }
 
@@ -40,13 +41,13 @@ export const DialogsStyled = styled.div`
 
 export const DialogList = styled.ul`
   background-color: #9b9a9a;
-  width: 70%;
+  width: 70vh;
   border-radius: 5px;
   padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 5px;
-
+  height: 100%;
   li {
     border: 1px solid black;
     border-radius: 5px;
