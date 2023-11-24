@@ -14,15 +14,26 @@ type UnfollowType = ReturnType<typeof unfollowAC>
 type SetUserType = ReturnType<typeof setUsersAC>
 type SetCurrentPageType = ReturnType<typeof setCurrentPageAC>
 type SetUsersTotalCountType = ReturnType<typeof setUsersTotalCountAC>
+type ToggleIsFollowingProgressAction = ReturnType<typeof toggleIsFollowingProgressAC>
 type ActionType = FollowType | UnfollowType | SetUserType | SetCurrentPageType | SetUsersTotalCountType
+     | ToggleIsFollowingProgressAction
 
 let initialState = {
-    users: [] as UserType[],
+    users: [],
     pageSize: 10,
     userTotalCount: 0,
-    currentPage: 0
+    currentPage: 0,
+    followingInProgress: []
 }
-export const usersReducer = (state = initialState, action: ActionType)=> {
+
+type InitStateType = {
+    users: UserType[]
+    pageSize: number,
+    userTotalCount: number,
+    currentPage: number,
+    followingInProgress: number[]
+}
+export const usersReducer = (state: InitStateType = initialState, action: ActionType): InitStateType => {
     switch (action.type) {
         case "FOLLOW":
             return {
@@ -54,6 +65,14 @@ export const usersReducer = (state = initialState, action: ActionType)=> {
         case 'SET-USER-TOTAL-COUNT':{
             return {...state, userTotalCount: action.totalUsersCount}
         }
+        case 'TOGGLE-IS-FOLLOWING-PROGRESS':{
+            return {
+                ...state,
+                followingInProgress : action.isFetching
+                    ? [...state.followingInProgress, action.userId]
+                    : state.followingInProgress.filter(id => id != action.userId)
+            }
+        }
         default:
             return state;
     }
@@ -66,3 +85,5 @@ export const unfollowAC = (userId: number) => ({type: "UNFOLLOW", userId }as con
 export const setUsersAC = (users: UserType[]) => ({type: "SET-USERS", users }as const)
 export  const setCurrentPageAC = (currentPage: number) => ({type: 'SET-CURRENT-PAGE', currentPage} as const)
 export  const setUsersTotalCountAC = (totalUsersCount: number) => ({type: 'SET-USER-TOTAL-COUNT', totalUsersCount} as const)
+export const toggleIsFollowingProgressAC = (isFetching: boolean, userId: number) =>
+        ({type: 'TOGGLE-IS-FOLLOWING-PROGRESS', isFetching, userId} as const)
