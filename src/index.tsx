@@ -1,21 +1,18 @@
-import {StateType, store} from './redux/state';
 import ReactDOM from 'react-dom/client';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter, HashRouter} from 'react-router-dom';
 import {App} from './App';
 import {GlobalStyled} from './styled/GlobalStyled';
 import React from 'react';
+import {Provider} from 'react-redux';
+import store from './redux/store';
+import './index.css'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-let rerenderEntireTree = (state: StateType) => {
-    root.render(
-        <div>
-            <BrowserRouter>
-                <App state={store.getState()} dispatch={store.dispatch.bind(store)}/>
-            </BrowserRouter>
-            <GlobalStyled/>
-        </div>
-    );
-}
-rerenderEntireTree(store.getState())
-store.subscribe(rerenderEntireTree)
+root.render(<HashRouter>
+        <Provider store={store}>
+            <App/>
+        </Provider>
+        <GlobalStyled/>
+    </HashRouter>
+)

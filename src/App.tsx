@@ -1,5 +1,4 @@
-import React, {FC} from 'react';
-import {Header} from './loyaut/header/Header';
+import React, {FC, useEffect} from 'react';
 import {Footer} from './loyaut/footer/Footer';
 import {Navbar} from './loyaut/navbar/Navbar';
 import {Profile} from './loyaut/profile/Profile';
@@ -12,19 +11,24 @@ import {
     AppMainStyled,
     AppStyled
 } from './AppStyled';
-import {Dialogs} from './loyaut/dialogs/Dialogs';
-import {ActionType, StateType, StoreType} from './redux/state';
+import {DialogsContainer} from './loyaut/dialogs/DialogsContainer';
+import {profileApi} from './api/profile-api';
+import UsersContainer from './loyaut/users/UsersContainer';
+import ProfileContainer from './loyaut/profile/ProfileContainer';
+import HeaderContainer from './loyaut/header/HeaderContainer';
 
 
-type AppPropsType = {
-    state: StateType
-    dispatch: (action: ActionType) => void
-}
-export const App: FC<AppPropsType> = ({state, dispatch}) =>  {
-    return (
+type AppPropsType = {}
+export const App: FC<AppPropsType> = ({})=>  {
+
+    useEffect(() => {
+        profileApi.getProfile()
+    });
+
+    return(
         <AppStyled>
             <AppHeaderStyled>
-                <Header/>
+                <HeaderContainer/>
             </AppHeaderStyled>
             <AppMainStyled>
                 <AppMainNavbarStyled>
@@ -32,9 +36,9 @@ export const App: FC<AppPropsType> = ({state, dispatch}) =>  {
                 </AppMainNavbarStyled>
                 <AppMainRoutesStyled>
                     <Routes>
-                        <Route path={'/'} element={<Profile stateProfile={state.profilePage}
-                                                            dispatch = {dispatch}/>}/>
-                        <Route path={'/dialogs/*'} element={<Dialogs users={state.users} dispatch={dispatch}/>}/>
+                        <Route path={'/profile/:userId?'} element={<ProfileContainer/>}/>
+                        <Route path={'/dialogs/*'} element={<DialogsContainer/>}/>
+                        <Route path={'/friends'} element={<UsersContainer/>}/>
                     </Routes>
                 </AppMainRoutesStyled>
             </AppMainStyled>

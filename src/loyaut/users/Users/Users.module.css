@@ -1,0 +1,74 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.preloader_box{
+
+}
+
+.pagination{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    border: 1px solid white;
+    border-radius: 20px;
+    margin-bottom: 50px;
+}
+
+.pagination li a {
+    color: white;
+}
+.pagination li a:hover {
+    color: #c53a3a;
+}
+
+.pagination li a:active {
+    color: #c53a3a;
+}
+
+
+.users_container {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+}
+
+.user_box {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 150px;
+}
+
+
+.user_box img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+}
+
+.user_box h3{
+}
+
+.user_box button {
+    width: 150px;
+    height: 30px;
+    background: none;
+    border: 1px solid seashell;
+    border-radius: 30px;
+    color: white;
+}
+
+.unfollow_button:hover {
+    border: 1px solid red;
+    background-color: red;
+}
+
+.follow_button:hover {
+    border: 1px solid green;
+    background-color: green;
+}

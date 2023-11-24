@@ -27,3 +27,4 @@ export const ButtonInput = styled.button`
     opacity: 0.5;
   }
 `
+

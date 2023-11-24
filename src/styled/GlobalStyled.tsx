@@ -30,4 +30,6 @@ export const GlobalStyled = createGlobalStyle`
   ul{
     list-style: none;
   }
+  
+  
 `

@@ -65,149 +65,123 @@ import {ActionProfileReducerType, profileReducer} from './profile-reducer';
 // export const subscribe = (observer: () => void) => {
 //     rerenderEntireTree = observer
 // }
-
-export type UsersType = {
-    [id: string]: {
-        name: string
-        message: MessageType[]
-        newMessage: string
-    }
-}
-export type PostType = {
-    id: string
-    text: string
-    likeCount: number
-}
-export type MessageType = {
-    id: string
-    text: string
-}
-export type StateType = {
-    profilePage: ProfilePageType
-    posts: PostType[]
-    users: UsersType
-}
-
-export type ProfilePageType = {
-    posts: PostType[]
-    newPostText: string
-}
-
-export type StoreType = {
-    _state: StateType
-    getState: () => StateType
-    addPost: (text: string) => void
-    updateNewPostText: (text: string) => void
-    _rerenderEntireTree: (state: StateType) => void
-    subscribe: (observer: (state: StateType) => void) => void
-    dispatch: (action: ActionType) => void
-}
-
-export const initValueMessage = v1()
-//костиль который принимает два редюсера \|/
-export type ActionType = ActionProfileReducerType | ActionDialogReducerType
-export let store: StoreType = {
-    _state: {
-        profilePage: {
-            posts: [
-                {id: v1(), text: 'Hello World!', likeCount: 11},
-                {id: v1(), text: 'Hello World!', likeCount: 6},
-                {id: v1(), text: 'Hello World!', likeCount: 5},
-                {id: v1(), text: 'Hello World!', likeCount: 1},
-            ],
-            newPostText: ''
-        },
-        posts: [
-            {id: v1(), text: 'Hello World!', likeCount: 11},
-            {id: v1(), text: 'Hello World!', likeCount: 6},
-            {id: v1(), text: 'Hello World!', likeCount: 5},
-            {id: v1(), text: 'Hello World!', likeCount: 1},
-        ],
-        users: {
-            [initValueMessage]: {
-                name: 'Stas',
-                message: [
-                    {id: v1(), text: 'Hello Stas'},
-                    {id: v1(), text: 'Hi'},
-                    {
-                        id: v1(),
-                        text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero'
-                    }],
-                newMessage: ''
-            },
-            [v1()]: {
-                name: 'Petia',
-                message: [
-                    {id: v1(), text: 'Hello Petia'},
-                    {id: v1(), text: 'Hi'},
-                    {
-                        id: v1(),
-                        text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero'
-                    }
-                ],
-                newMessage: ''
-            },
-            [v1()]: {
-                name: 'Vasia',
-                message: [
-                    {id: v1(), text: 'Hello Vasia'},
-                    {id: v1(), text: 'Hi'},
-                    {
-                        id: v1(),
-                        text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero'
-                    }
-                ],
-                newMessage: ''
-            },
-            [v1()]: {
-                name: 'Kateryna',
-                message: [
-                    {id: v1(), text: 'Hello Kateryna'},
-                    {id: v1(), text: 'Hi'},
-                    {
-                        id: v1(),
-                        text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero'
-                    }
-                ],
-                newMessage: ''
-            },
-            [v1()]: {
-                name: 'Yana',
-                message: [
-                    {id: v1(), text: 'Hello Yana'},
-                    {id: v1(), text: 'Hi'},
-                    {
-                        id: v1(),
-                        text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero'
-                    }
-                ],
-                newMessage: ''
-            },
-        }
-    },
-    _rerenderEntireTree() {
-    },
-    getState() {
-        return this._state
-    },
-    addPost() {
-        if (this._state.profilePage.newPostText.trim() !== '') {
-            this._state.profilePage.posts.push({id: v1(), text: this._state.profilePage.newPostText, likeCount: 0})
-            this._rerenderEntireTree(this._state)
-            this._state.profilePage.newPostText = ''
-        }
-    },
-    updateNewPostText(text: string) {
-        this._state.profilePage.newPostText = text
-        this._rerenderEntireTree(this._state)
-    },
-    subscribe(observer: (state: StateType) => void) {
-        this._rerenderEntireTree = observer
-    },
-    dispatch(action: ActionType ) {
-        this._state.profilePage = profileReducer(this._state.profilePage, action)
-        this._state.users = dialogReducer(this._state.users, action)
-        this._rerenderEntireTree(this._state)
-    }
-}
-
+//
+//
+//
+// export type StoreType = {
+//     _state: StateType
+//     getState: () => StateType
+//     addPost: (text: string) => void
+//     updateNewPostText: (text: string) => void
+//     _rerenderEntireTree: (state: StateType) => void
+//     subscribe: (observer: (state: StateType) => void) => void
+//     dispatch: (action: ActionType) => void
+// }
+//
+// //костиль который принимает два редюсера \|/
+// export type ActionType = ActionProfileReducerType | ActionDialogReducerType
+// export let store: StoreType = {
+//     _state: {
+//         profilePage: {
+//             posts: [
+//                 {id: v1(), text: 'Hello World!', likeCount: 11},
+//                 {id: v1(), text: 'Hello World!', likeCount: 6},
+//                 {id: v1(), text: 'Hello World!', likeCount: 5},
+//                 {id: v1(), text: 'Hello World!', likeCount: 1},
+//             ],
+//             newPostText: ''
+//         },
+//         posts: [
+//             {id: v1(), text: 'Hello World!', likeCount: 11},
+//             {id: v1(), text: 'Hello World!', likeCount: 6},
+//             {id: v1(), text: 'Hello World!', likeCount: 5},
+//             {id: v1(), text: 'Hello World!', likeCount: 1},
+//         ],
+//         users: {
+//             [initValueMessage]: {
+//                 name: 'Stas',
+//                 message: [
+//                     {id: v1(), text: 'Hello Stas'},
+//                     {id: v1(), text: 'Hi'},
+//                     {
+//                         id: v1(),
+//                         text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero'
+//                     }],
+//                 newMessage: ''
+//             },
+//             [v1()]: {
+//                 name: 'Petia',
+//                 message: [
+//                     {id: v1(), text: 'Hello Petia'},
+//                     {id: v1(), text: 'Hi'},
+//                     {
+//                         id: v1(),
+//                         text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero'
+//                     }
+//                 ],
+//                 newMessage: ''
+//             },
+//             [v1()]: {
+//                 name: 'Vasia',
+//                 message: [
+//                     {id: v1(), text: 'Hello Vasia'},
+//                     {id: v1(), text: 'Hi'},
+//                     {
+//                         id: v1(),
+//                         text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero'
+//                     }
+//                 ],
+//                 newMessage: ''
+//             },
+//             [v1()]: {
+//                 name: 'Kateryna',
+//                 message: [
+//                     {id: v1(), text: 'Hello Kateryna'},
+//                     {id: v1(), text: 'Hi'},
+//                     {
+//                         id: v1(),
+//                         text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero'
+//                     }
+//                 ],
+//                 newMessage: ''
+//             },
+//             [v1()]: {
+//                 name: 'Yana',
+//                 message: [
+//                     {id: v1(), text: 'Hello Yana'},
+//                     {id: v1(), text: 'Hi'},
+//                     {
+//                         id: v1(),
+//                         text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, deserunt dolorum ea eius excepturi hic illo inventore itaque iure, libero'
+//                     }
+//                 ],
+//                 newMessage: ''
+//             },
+//         }
+//     },
+//     _rerenderEntireTree() {
+//     },
+//     getState() {
+//         return this._state
+//     },
+//     addPost() {
+//         if (this._state.profilePage.newPostText.trim() !== '') {
+//             this._state.profilePage.posts.push({id: v1(), text: this._state.profilePage.newPostText, likeCount: 0})
+//             this._rerenderEntireTree(this._state)
+//             this._state.profilePage.newPostText = ''
+//         }
+//     },
+//     updateNewPostText(text: string) {
+//         this._state.profilePage.newPostText = text
+//         this._rerenderEntireTree(this._state)
+//     },
+//     subscribe(observer: (state: StateType) => void) {
+//         this._rerenderEntireTree = observer
+//     },
+//     dispatch(action: ActionType ) {
+//         this._state.profilePage = profileReducer(this._state.profilePage, action)
+//         this._state.users = dialogReducer(this._state.users, action)
+//         this._rerenderEntireTree(this._state)
+//     }
+// }
+//

@@ -1,26 +1,34 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
 import borderImage from './../../assets/img/border.png'
-import {MyPosts} from './my-post/MyPosts';
-import {ActionType, ProfilePageType} from '../../redux/state';
+import {MyPostContainer} from './my-post/MyPostsContainer';
+import {ProfileType} from '../../redux/profile-reducer';
+import styles from './Profile.module.css'
+import {HashLoader} from 'react-spinners';
+import {ProfileInfo} from './profile-info/ProfileInfo';
 
 
 type PropsType = {
-    stateProfile: ProfilePageType
-    dispatch: (action: ActionType) => void
+    profile: ProfileType | null
 }
-export const Profile: FC<PropsType> = ({stateProfile, dispatch}) => {
-
+export const Profile: FC<PropsType> = (props) => {
 
     return (
-        <ProfileStyled>
-            <BorderImage src={borderImage}/>
-            <ImageProfile/>
-            <div>
-                Information to Profile
-            </div>
-            <MyPosts stateProfile={stateProfile} dispatch={dispatch}/>
-        </ProfileStyled>
+        <div className={styles.profile_container}>
+            {props.profile === null ?
+                <div className={styles.preloader_box}>
+                    <HashLoader
+                        color={'red'}
+                        size={250}
+                    />
+                </div>
+                : <div>
+                    <BorderImage src={borderImage}/>
+                    <ProfileInfo profile={props.profile}/>
+                    <MyPostContainer/>
+                </div>
+            }
+        </div>
     );
 };
 
@@ -36,10 +44,12 @@ type ImageProfilePropsType = {
     height?: string
 }
 export const ImageProfile = styled.image<ImageProfilePropsType>`
-  width: {(props) => props.width};
-  height: {(props) => props.height};
+  width: {(props)= > props . width
+  };
+  height: {(props)= > props . height
+  };
 `
 
 export const ProfileStyled = styled.div`
-  
+
 `

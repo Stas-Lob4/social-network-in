@@ -5,9 +5,9 @@ import {Link, NavLink} from 'react-router-dom';
 export const Navbar = () => {
     return (
         <NavbarStyled>
-                <li><NavLink to={"/"}>My profile</NavLink></li>
+                <li><NavLink to={"/profile/:userId"}>My profile</NavLink></li>
                 <li><NavLink to={"/dialogs"}>Dialogs</NavLink></li>
-                <li><Link to={"/friend"}>Friends</Link></li>
+                <li><Link to={"/friends"}>Friends</Link></li>
                 <li><Link to={"/#"}>Groups</Link></li>
                 <li><Link to={"/#"}>Settings</Link></li>
         </NavbarStyled>

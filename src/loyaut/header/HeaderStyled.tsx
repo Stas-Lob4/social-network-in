@@ -19,6 +19,12 @@ export const Image = styled.img<ImageProsType>`
   width: ${props => props.width};
   margin: auto 10px;
 `
+
+export const LoginBlock = styled.div`
+  display: flex;
+  
+`
+
 export const ButtonStyled = styled.button`
   margin-right: 10px;
   height: 30px;

@@ -1,18 +1,14 @@
 import React, {ChangeEvent} from 'react';
 import {Post} from './Post';
 import {ButtonInput, InputBox, TextArea} from './MyPostStyled';
-import {ActionType, ProfilePageType} from '../../../redux/state';
-import {addPostAC, updateNewPostText} from '../../../redux/profile-reducer';
+import {MyPostPropsType} from './MyPostsContainer';
 
-type MyPostPropsType = {
-    stateProfile: ProfilePageType
-    dispatch: (action: ActionType) => void
-}
-export const MyPosts: React.FC<MyPostPropsType> = ({stateProfile, dispatch}) => {
+
+export const MyPosts: React.FC<MyPostPropsType> = ({stateProfile, addPost, updateNewPostText}) => {
 
     const onClickHandler = () => {
         if(stateProfile.newPostText !== ''){
-            dispatch(addPostAC())
+            addPost()
         }
     }
 
@@ -20,7 +16,7 @@ export const MyPosts: React.FC<MyPostPropsType> = ({stateProfile, dispatch}) => 
         const newText = e.currentTarget.value;
 
         if (newText !== '') {
-            dispatch(updateNewPostText(newText));
+           updateNewPostText(newText)
         }
     }
 

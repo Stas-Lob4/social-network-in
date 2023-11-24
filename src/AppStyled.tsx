@@ -5,7 +5,9 @@ export const AppStyled = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: #141414;
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
+  overflow: auto;
 `
 export const AppHeaderStyled = styled.header`
   max-width: 1150px;
@@ -13,12 +15,14 @@ export const AppHeaderStyled = styled.header`
   width: 100%;
 `
 export const AppMainStyled = styled.main`
-  flex: 1;
   display: flex;
   flex-direction: row;
   max-width: 1150px;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  min-height: 0;
+  flex: 1;
+  align-items: stretch; /* Добавьте это свойство */
 `
 export const AppFooterStyled = styled.footer`
   width: 100%;
