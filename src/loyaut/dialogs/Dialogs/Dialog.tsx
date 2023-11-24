@@ -1,9 +1,16 @@
 import React, {ChangeEvent} from 'react';
 import {DialogList} from './Dialogs';
 import {DialogPropsType} from '../DialogsContainer';
+import {UsersType} from '../../../redux/reducers/dialog-reducer';
 
-
-export const Dialog: React.FC<DialogPropsType & {id: string}> = ({id, deleteMessage, updateNewMessageText, addNewMessage, users}) => {
+type PropsType = {
+    users: UsersType
+    updateNewMessageText: (userId: string, text: string) => void
+    addNewMessage: (userId: string) => void
+    deleteMessage: (userId: string, idMessage: string) => void
+    id: string
+}
+export const Dialog: React.FC<PropsType> = ({id, deleteMessage, updateNewMessageText, addNewMessage, users}) => {
     const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const newMessageText = e.currentTarget.value
         if(newMessageText.trim() !== ''){

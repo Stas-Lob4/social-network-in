@@ -1,18 +1,13 @@
-import {AppRootStateType} from '../../redux/store';
-import {Dispatch} from 'redux';
+import {AppRootStateType, ThunkActionType} from '../../redux/store';
+import {AnyAction, Dispatch} from 'redux';
 import {connect} from 'react-redux';
 import {Users} from './Users/Users';
-import {
-    followAC,
-    setCurrentPageAC,
-    setUsersAC,
-    setUsersTotalCountAC,
-    unfollowAC,
-    UserType
-} from '../../redux/users-reducer';
-import {instance} from '../../api/api-utils';
+import {setCurrentPageAC, setUsersAC, setUsersTotalCountAC, UserType} from '../../redux/reducers/users-reducer';
 import React from 'react';
 import {usersApi} from '../../api/users-api';
+import {followTC, getUsersTC, unfollowTC} from '../../redux/thunks/users-thunks';
+import {WithAuthRedirect, WithAuthRedirectPropsType} from '../../hoc/withAuthRedirect';
+import {ThunkDispatch} from 'redux-thunk';
 
 
 type StateType = {}
@@ -20,12 +15,7 @@ type StateType = {}
 class UsersContainer extends React.Component<UsersPropsType, StateType> {
     componentDidMount() {
         if (this.props.users.length === 0) {
-            instance.get(`users`)
-                .then(response => {
-                    console.log('usersCount', response.data.totalCount)
-                    this.props.setUsers(response.data.items)
-                    this.props.setTotalCount(response.data.totalCount)
-                })
+            this.props.getUsersTC()
         }
     }
 
@@ -43,12 +33,10 @@ class UsersContainer extends React.Component<UsersPropsType, StateType> {
             totalCount={this.props.totalCount}
             currentPage={this.props.currentPage}
             pageSize={this.props.pageSize}
+            followingInProgress={this.props.followingInProgress}
 
-            setUsers={this.props.setUsers}
             follow={this.props.follow}
             unfollow={this.props.unfollow}
-            setTotalCount={this.props.setTotalCount}
-            setCurrentPage={this.props.setCurrentPage}
             onPageChanged={this.onPageChanged}
         />
     }
@@ -59,6 +47,8 @@ type MapStatePropsType = {
     totalCount: number
     currentPage: number
     pageSize: number
+    followingInProgress: number[]
+    isAuth: boolean
 }
 type MapDispatchPropsType = {
     follow: (userId: number) => void
@@ -66,39 +56,26 @@ type MapDispatchPropsType = {
     setUsers: (users: UserType[]) => void
     setTotalCount: (totalCount: number) => void
     setCurrentPage: (pageNumber: number) => void
+    getUsersTC: () => void
 }
 let mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
     return {
         users: state.usersReducer.users,
         totalCount: state.usersReducer.userTotalCount,
         currentPage: state.usersReducer.currentPage,
-        pageSize: state.usersReducer.pageSize
+        pageSize: state.usersReducer.pageSize,
+        followingInProgress: state.usersReducer.followingInProgress,
+        isAuth: state.authReducer.isAuth
     }
 }
 
-let mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType => {
+let mapDispatchToProps = (dispatch: ThunkDispatch<AppRootStateType, unknown, AnyAction>): MapDispatchPropsType => {
     return {
         follow: (userId: number) => {
-            usersApi.follow(userId)
-                .then(resp => {
-                    if (resp.data.resultCode === 0) {
-                        console.log('follow', resp.data)
-                        dispatch(followAC(userId));
-                    } else {
-                        console.log('error follow')
-                    }
-                })
+            dispatch(followTC(userId))
         },
         unfollow: (userId: number) => {
-            usersApi.unfollow(userId)
-                .then(resp => {
-                    if (resp.data.resultCode === 0) {
-                        console.log('unfollow')
-                        dispatch(unfollowAC(userId));
-                    } else {
-                        console.log('error unfollow')
-                    }
-                })
+            dispatch(unfollowTC(userId))
         },
         setUsers: (users: UserType[]) => {
             dispatch(setUsersAC(users));
@@ -108,11 +85,17 @@ let mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType => {
         },
         setCurrentPage: (pageNumber: number) => {
             dispatch(setCurrentPageAC(pageNumber))
+        },
+        getUsersTC: () => {
+            dispatch(getUsersTC())
         }
     }
 }
 
-export default connect<MapStatePropsType, MapDispatchPropsType, {}, AppRootStateType>(mapStateToProps, mapDispatchToProps)(UsersContainer)
+const AuthRedirectComponent = WithAuthRedirect(UsersContainer)
+
+
+export default connect<MapStatePropsType, MapDispatchPropsType, {}, AppRootStateType>(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent)
 export type UsersPropsType = MapStatePropsType
     & MapDispatchPropsType
-    & {}
+    & WithAuthRedirectPropsType

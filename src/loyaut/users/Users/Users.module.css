@@ -67,8 +67,14 @@
     border: 1px solid red;
     background-color: red;
 }
+.unfollow_button:hover:disabled {
+    opacity: 0.2;
+}
 
 .follow_button:hover {
     border: 1px solid green;
     background-color: green;
+}
+.follow_button:hover:disabled  {
+   opacity: 0.2;
 }

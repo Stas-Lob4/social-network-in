@@ -1,12 +1,15 @@
 import React from 'react';
 import {Profile} from './Profile';
-import {ProfileType, setUserProfileAC} from '../../redux/profile-reducer';
+import {ProfileType, setUserProfileAC} from '../../redux/reducers/profile-reducer';
 import {AppRootStateType} from '../../redux/store';
 import {connect} from 'react-redux';
 import {Dispatch} from 'redux';
 import {instance} from '../../api/api-utils';
 import {withRouter} from '../../utils/withRouter';
 import {NavigateFunction, Params} from 'react-router';
+import { Navigate } from 'react-router-dom';
+import {WithAuthRedirect} from '../../hoc/withAuthRedirect';
+
 
 
 type PropsType = {}
@@ -31,10 +34,12 @@ class ProfileContainer extends React.Component<ProfilePropsType, PropsType> {
 
 type MapStateToPropsType = {
     profile: ProfileType | null
+    isAuth: boolean
 }
 const mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
     return {
-        profile: state.profileReducer.profile
+        profile: state.profileReducer.profile,
+        isAuth: state.authReducer.isAuth
     }
 }
 
@@ -50,10 +55,11 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => {
     }
 }
 
-let withUrlDataContainerComponent = withRouter(ProfileContainer)
+const withUrlDataContainerComponent = withRouter(ProfileContainer)
+const AuthRedirectComponent = WithAuthRedirect(withUrlDataContainerComponent)
 
 export default connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppRootStateType>
-(mapStateToProps, mapDispatchToProps)(withUrlDataContainerComponent)
+(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent)
 type ProfilePropsType = MapStateToPropsType & MapDispatchToPropsType & {
     router: {
         location: Location

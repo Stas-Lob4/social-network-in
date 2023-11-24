@@ -1,4 +1,4 @@
-import {addPostAC, ProfilePageType, updateNewPostTextAC} from '../../../redux/profile-reducer';
+import {addPostAC, ProfilePageType, updateNewPostTextAC} from '../../../redux/reducers/profile-reducer';
 import {MyPosts} from './MyPosts';
 import {AppRootStateType} from '../../../redux/store';
 import {connect} from 'react-redux';

@@ -1,12 +1,19 @@
 import React, {FC, useState} from 'react';
 import styled from 'styled-components';
-import {initValueMessage} from '../../../redux/dialog-reducer';
+import {initValueMessage, UsersType} from '../../../redux/reducers/dialog-reducer';
 import {DialogItem} from '../DialogItem/DialogItem';
 import {DialogPropsType} from '../DialogsContainer';
 import {Dialog} from './Dialog';
 
 
-export const Dialogs: FC<DialogPropsType> = (props) => {
+type PropsType = {
+    users: UsersType
+    updateNewMessageText: (userId: string, text: string) => void
+    addNewMessage: (userId: string) => void
+    deleteMessage: (userId: string, idMessage: string) => void
+}
+
+export const Dialogs: FC<PropsType> = (props) => {
     const [userMessageId, setUserMessageId] = useState(initValueMessage);
 
     const onClickHandler = (id: string) => setUserMessageId(id)

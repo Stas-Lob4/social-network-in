@@ -5,11 +5,20 @@ import styles from './Users.module.css'
 import ReactPaginate from 'react-paginate';
 import {HashLoader} from 'react-spinners';
 import {NavLink} from 'react-router-dom';
+import {UserType} from '../../../redux/reducers/users-reducer';
 
 type PropsType = {
+    users: UserType[]
+    totalCount: number
+    currentPage: number
+    pageSize: number
+    followingInProgress: number[]
+
     onPageChanged: (pageNumber: number) => void
+    follow: (userId: number) => void
+    unfollow: (userId: number) => void
 }
-export const Users: React.FC<UsersPropsType & PropsType> = (props) => {
+export const Users: React.FC<PropsType> = (props) => {
     return (
         <div className={styles.container}>
             {props.users.length === 0
@@ -35,11 +44,15 @@ export const Users: React.FC<UsersPropsType & PropsType> = (props) => {
                                 </NavLink>
                                 <h3>{u.name.length <= 13 ? u.name : u.name.substring(0, 12) + '...'}</h3>
                                 {u.followed
-                                    ? <button onClick={() => props.unfollow(u.id)}
-                                              className={styles.unfollow_button}
+                                    ? <button
+                                        disabled={props.followingInProgress.some(id => id === u.id)}
+                                        onClick={() => props.unfollow(u.id)}
+                                        className={styles.unfollow_button}
                                     >Unfollow</button>
-                                    : <button onClick={() => props.follow(u.id)}
-                                              className={styles.follow_button}
+                                    : <button
+                                        disabled={props.followingInProgress.some(id => id === u.id)}
+                                        onClick={() => props.follow(u.id)}
+                                        className={styles.follow_button}
                                     >Follow</button>
                                 }
                             </div>

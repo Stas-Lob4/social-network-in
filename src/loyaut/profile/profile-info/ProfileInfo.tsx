@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import s from './ProfileInfo.module.css'
-import {ProfileType} from '../../../redux/profile-reducer';
+import {ProfileType} from '../../../redux/reducers/profile-reducer';
 import user_icon from '../../../assets/img/user-icon.jpg'
 
 

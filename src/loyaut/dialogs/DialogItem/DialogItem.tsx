@@ -1,4 +1,4 @@
-import {UsersType} from '../../../redux/dialog-reducer';
+import {UsersType} from '../../../redux/reducers/dialog-reducer';
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import s from '../Dialogs/Dialog.module.css';

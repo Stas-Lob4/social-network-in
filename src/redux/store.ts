@@ -1,9 +1,10 @@
-import {combineReducers ,legacy_createStore as createStore} from 'redux';
-import {profileReducer} from "./profile-reducer";
-import {dialogReducer} from "./dialog-reducer";
-import {sidebarReducer} from "./sidebar-reducer";
-import {usersReducer} from './users-reducer';
-import {authReducer} from './auth-reducer';
+import {AnyAction, applyMiddleware,combineReducers ,legacy_createStore as createStore} from 'redux';
+import {profileReducer} from "./reducers/profile-reducer";
+import {dialogReducer} from "./reducers/dialog-reducer";
+import {sidebarReducer} from "./reducers/sidebar-reducer";
+import {usersReducer} from './reducers/users-reducer';
+import {authReducer} from './reducers/auth-reducer';
+import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk';
 
 const rootReducer = combineReducers({
     profileReducer: profileReducer,
@@ -13,8 +14,12 @@ const rootReducer = combineReducers({
     //sidebarReducer: sidebarReducer
 })
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 export type AppRootStateType = ReturnType<typeof rootReducer>
+export type ThunkActionType = ThunkAction<void, AppRootStateType, unknown, AnyAction>
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction>
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AnyAction>
 
 export default store

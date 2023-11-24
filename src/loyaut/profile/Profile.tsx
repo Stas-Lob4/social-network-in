@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import styled from 'styled-components';
 import borderImage from './../../assets/img/border.png'
 import {MyPostContainer} from './my-post/MyPostsContainer';
-import {ProfileType} from '../../redux/profile-reducer';
+import {ProfileType} from '../../redux/reducers/profile-reducer';
 import styles from './Profile.module.css'
 import {HashLoader} from 'react-spinners';
 import {ProfileInfo} from './profile-info/ProfileInfo';

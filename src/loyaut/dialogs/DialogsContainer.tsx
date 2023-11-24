@@ -1,25 +1,44 @@
-import {addMessageAC, deleteMessageAC, updateNewMessageText, UsersType} from '../../redux/dialog-reducer';
+import {addMessageAC, deleteMessageAC, updateNewMessageText, UsersType} from '../../redux/reducers/dialog-reducer';
 import {connect} from 'react-redux';
 import {Dialogs} from './Dialogs/Dialogs';
 import {AppRootStateType} from '../../redux/store';
-import { Dispatch } from 'redux';
+import {Dispatch} from 'redux';
+import React from 'react';
+import {Navigate} from 'react-router-dom';
+import {WithAuthRedirect, WithAuthRedirectPropsType} from '../../hoc/withAuthRedirect';
 
-type MapStatePropsType = {
-    users: UsersType
+type PropsType = {}
+
+class DialogsContainer extends React.Component<DialogPropsType, PropsType> {
+    render() {
+        return <Dialogs
+            users={this.props.users}
+            updateNewMessageText={this.props.updateNewMessageText}
+            addNewMessage={this.props.addNewMessage}
+            deleteMessage={this.props.deleteMessage}
+        />
+    }
 }
 
-type MapDispatchPropsType = {
+
+type MapStateToPropsType = {
+    users: UsersType
+    isAuth: boolean
+}
+
+type MapDispatchToPropsType = {
     updateNewMessageText: (userId: string, text: string) => void
     addNewMessage: (userId: string) => void
     deleteMessage: (userId: string, idMessage: string) => void
 }
-let mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
+let mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
     return {
-        users: state.dialogReducer
+        users: state.dialogReducer,
+        isAuth: state.authReducer.isAuth
     }
 }
 
-let mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType => {
+let mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => {
     return {
         updateNewMessageText: (userId: string, text: string) => {
             dispatch(updateNewMessageText(userId, text))
@@ -33,7 +52,9 @@ let mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType => {
     }
 }
 
-export const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs)
-export type DialogPropsType = MapStatePropsType & MapDispatchPropsType
+const AuthRedirectComponent = WithAuthRedirect(DialogsContainer)
+
+export default connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppRootStateType>(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent)
+export type DialogPropsType = MapStateToPropsType & MapDispatchToPropsType & WithAuthRedirectPropsType
 
 
