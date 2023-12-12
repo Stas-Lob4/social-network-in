@@ -6,6 +6,14 @@ import React from 'react';
 import {usersApi} from '../../api/users-api';
 import {followTC, getUsersTC, unfollowTC} from '../../redux/thunks/users-thunks';
 import {WithAuthRedirect, WithAuthRedirectPropsType} from '../../hoc/withAuthRedirect';
+import {
+    getCurrentPage,
+    getFollowingInProgress,
+    getPageSize,
+    getTotalCount,
+    getUsers
+} from '../../redux/selectors/users-selectors';
+import {getIsAuth} from '../../redux/selectors/auth-selectors';
 
 
 type StateType = {}
@@ -58,12 +66,12 @@ type MapDispatchPropsType = {
 }
 let mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
     return {
-        users: state.usersReducer.users,
-        totalCount: state.usersReducer.userTotalCount,
-        currentPage: state.usersReducer.currentPage,
-        pageSize: state.usersReducer.pageSize,
-        followingInProgress: state.usersReducer.followingInProgress,
-        isAuth: state.authReducer.isAuth
+        users: getUsers(state),
+        totalCount: getTotalCount(state),
+        currentPage: getCurrentPage(state),
+        pageSize: getPageSize(state),
+        followingInProgress: getFollowingInProgress(state),
+        isAuth: getIsAuth(state)
     }
 }
 
