@@ -5,12 +5,14 @@ import {sidebarReducer} from "./reducers/sidebar-reducer";
 import {usersReducer} from './reducers/users-reducer';
 import {authReducer} from './reducers/auth-reducer';
 import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk';
+import {appReducer} from './reducers/app-reducer';
 
 const rootReducer = combineReducers({
     profileReducer: profileReducer,
     dialogReducer: dialogReducer,
     usersReducer: usersReducer,
-    authReducer: authReducer
+    authReducer: authReducer,
+    app: appReducer
     //sidebarReducer: sidebarReducer
 })
 

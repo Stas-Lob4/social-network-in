@@ -1,17 +1,11 @@
 import React from 'react';
 import {Header} from './Header';
 import {connect} from 'react-redux';
-import {AppRootStateType} from '../../redux/store';
-import {AnyAction, Dispatch} from 'redux';
+import {AppDispatch, AppRootStateType} from '../../redux/store';
 import {setAuthUserDataTC} from '../../redux/thunks/auth-thunk';
-import {ThunkDispatch} from 'redux-thunk';
 
 type PropsType = {}
 class HeaderContainer extends React.Component<HeaderPropsType, PropsType> {
-    componentDidMount() {
-        this.props.setUserData()
-    }
-
     render() {
         return <Header {...this.props} isAuth={this.props.isAuth}/>
     }
@@ -32,10 +26,9 @@ const mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
 }
 
 type MapDispatchToPropsType = {
-    setUserData: () => void
 }
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<AppRootStateType, unknown, AnyAction>): MapDispatchToPropsType => {
+const mapDispatchToProps = (dispatch: AppDispatch): MapDispatchToPropsType => {
     return {
         setUserData: () => {
             dispatch(setAuthUserDataTC())

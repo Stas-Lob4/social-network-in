@@ -18,12 +18,15 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
                 ...action.data,
                 isAuth: true
             }
+        case 'LOGOUT':{
+            return {...state, isAuth: false}
+        }
         default:
             return state
     }
 }
 
-type ActionType = SetUserDataActionType
+type ActionType = SetUserDataActionType | LogoutActionType
 
 type SetUserDataActionType = ReturnType<typeof setAuthUserDataAC>
 export const setAuthUserDataAC = (userId: number, email: string, login: string) => {
@@ -32,3 +35,6 @@ export const setAuthUserDataAC = (userId: number, email: string, login: string) 
         data: {userId, email, login}
     } as const
 }
+
+type LogoutActionType = ReturnType<typeof logoutAC>
+export const logoutAC = () => ({type: "LOGOUT"} as const)

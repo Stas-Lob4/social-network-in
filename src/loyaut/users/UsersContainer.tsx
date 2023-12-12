@@ -1,5 +1,4 @@
-import {AppRootStateType, ThunkActionType} from '../../redux/store';
-import {AnyAction, Dispatch} from 'redux';
+import {AppDispatch, AppRootStateType} from '../../redux/store';
 import {connect} from 'react-redux';
 import {Users} from './Users/Users';
 import {setCurrentPageAC, setUsersAC, setUsersTotalCountAC, UserType} from '../../redux/reducers/users-reducer';
@@ -7,7 +6,6 @@ import React from 'react';
 import {usersApi} from '../../api/users-api';
 import {followTC, getUsersTC, unfollowTC} from '../../redux/thunks/users-thunks';
 import {WithAuthRedirect, WithAuthRedirectPropsType} from '../../hoc/withAuthRedirect';
-import {ThunkDispatch} from 'redux-thunk';
 
 
 type StateType = {}
@@ -69,7 +67,7 @@ let mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
     }
 }
 
-let mapDispatchToProps = (dispatch: ThunkDispatch<AppRootStateType, unknown, AnyAction>): MapDispatchPropsType => {
+let mapDispatchToProps = (dispatch: AppDispatch): MapDispatchPropsType => {
     return {
         follow: (userId: number) => {
             dispatch(followTC(userId))

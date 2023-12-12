@@ -10,6 +10,8 @@ import {ProfileInfo} from './profile-info/ProfileInfo';
 
 type PropsType = {
     profile: ProfileType | null
+    setStatus: (status: string) => void
+    status: string
 }
 export const Profile: FC<PropsType> = (props) => {
 
@@ -24,7 +26,7 @@ export const Profile: FC<PropsType> = (props) => {
                 </div>
                 : <div>
                     <BorderImage src={borderImage}/>
-                    <ProfileInfo profile={props.profile}/>
+                    <ProfileInfo profile={props.profile} setStatus={props.setStatus} status={props.status}/>
                     <MyPostContainer/>
                 </div>
             }

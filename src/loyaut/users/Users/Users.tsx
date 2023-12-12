@@ -30,11 +30,11 @@ export const Users: React.FC<PropsType> = (props) => {
                 </div>
                 : <div>
                     <ReactPaginate
-                        pageCount={props.totalCount / props.pageSize}
+                        pageCount={Math.ceil(props.totalCount / props.pageSize)}
                         className={styles.pagination}
                         onPageChange={(selectedItem: {
                             selected: number
-                        }) => props.onPageChanged(selectedItem.selected)}
+                        }) => props.onPageChanged(selectedItem.selected + 1)}
                     />
                     <div className={styles.users_container}>
                         {props.users.map(u =>

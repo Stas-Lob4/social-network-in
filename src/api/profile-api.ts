@@ -1,7 +1,13 @@
 import {instance} from './api-utils';
 
 export const profileApi = {
-    getProfile(){
-        return instance.get('profile')
+    getProfile(id: number){
+        return instance.get(`profile/${id}`)
+    },
+    getStatusProfile(id: number){
+        return instance.get(`profile/status/${id}`)
+    },
+    updateStatusProfile(status: string){
+        return instance.put(`profile/status`, {status: status})
     }
 }

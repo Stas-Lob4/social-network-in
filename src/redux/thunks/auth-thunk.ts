@@ -1,14 +1,39 @@
 import {Dispatch} from 'redux';
-import {setAuthUserDataAC} from '../reducers/auth-reducer';
-import {authApi} from '../../api/auth-api';
-import {AppThunk} from '../store';
+import {logoutAC, setAuthUserDataAC} from '../reducers/auth-reducer';
+import {authApi, LoginDataType} from '../../api/auth-api';
+import {AppDispatch} from '../store';
+import {profileApi} from '../../api/profile-api';
+import {setUserProfileAC} from '../reducers/profile-reducer';
+import {setInitialStatusAppAC} from '../reducers/app-reducer';
 
-export const setAuthUserDataTC = ():AppThunk => (dispatch: Dispatch) => {
+export const setAuthUserDataTC = () => (dispatch: Dispatch) => {
+    dispatch(setInitialStatusAppAC(true))
     authApi.getAuth()
         .then(response => {
-            console.log('Auth', response.data)
             if (response.data.resultCode === 0) {
-                dispatch(setAuthUserDataAC(response.data.userId, response.data.email, response.data.login))
+                dispatch(setAuthUserDataAC(response.data.data.id, response.data.data.email, response.data.data.login))
+                profileApi.getProfile(response.data.data.id).then(res => {
+                    dispatch(setUserProfileAC(res.data))
+                })
             }
         })
+        .finally(() => dispatch(setInitialStatusAppAC(false)))
+}
+
+export const loginProfileTC = (data: LoginDataType) => (dispatch: AppDispatch) => {
+    authApi.addAuth(data)
+        .then(res => {
+            if(res.data.resultCode === 0){
+                dispatch(setAuthUserDataTC())
+            }
+        })
+}
+
+export const logoutProfileTC = ()=> (dispatch: AppDispatch) => {
+    authApi.deleteAuth()
+        .then(res => {
+            if(res.data.resultCode === 0){
+                dispatch(logoutAC())
+            }
+    })
 }
