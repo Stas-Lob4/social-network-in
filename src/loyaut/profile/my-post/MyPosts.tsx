@@ -1,22 +1,30 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent,useState, KeyboardEvent} from 'react';
 import {Post} from './Post';
 import {ButtonInput, InputBox, TextArea} from './MyPostStyled';
 import {MyPostPropsType} from './MyPostsContainer';
 
 
-export const MyPosts: React.FC<MyPostPropsType> = ({stateProfile, addPost, updateNewPostText}) => {
+export const MyPosts: React.FC<MyPostPropsType> = React.memo(({stateProfile, addPost, updateNewPostText}) => {
+
+    const [text, setText] = useState<string>('')
 
     const onClickHandler = () => {
-        if(stateProfile.newPostText !== ''){
-            addPost()
+        if(text !== ''){
+            addPost(text)
+            setText('')
         }
     }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const newText = e.currentTarget.value;
-
         if (newText !== '') {
-           updateNewPostText(newText)
+           setText(newText)
+        }
+    }
+
+    const onClickKeyHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if(e.key === 'Enter'){
+            onClickHandler()
         }
     }
 
@@ -25,8 +33,9 @@ export const MyPosts: React.FC<MyPostPropsType> = ({stateProfile, addPost, updat
         <div>
             <h3>My posts</h3>
                 <InputBox>
-                    <TextArea placeholder={'Input new post'} value={stateProfile.newPostText} onChange={onChangeHandler}/>
-                    <ButtonInput onClick={onClickHandler}>+</ButtonInput>
+                    <TextArea placeholder={'Input new post'}
+                              value={text} onChange={onChangeHandler} onKeyPress={onClickKeyHandler}/>
+                    <ButtonInput onClick={onClickHandler} >+</ButtonInput>
                 </InputBox>
             <div>
                 <ul>
@@ -36,5 +45,4 @@ export const MyPosts: React.FC<MyPostPropsType> = ({stateProfile, addPost, updat
 
         </div>
     );
-};
-
+})

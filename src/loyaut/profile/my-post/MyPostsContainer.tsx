@@ -10,7 +10,7 @@ type MapStateToPropsType = {
     stateProfile: ProfilePageType
 }
 type MapDispatchPropsType = {
-    addPost: () => void
+    addPost: (text: string) => void
     updateNewPostText: (text: string) => void
 }
 
@@ -22,8 +22,8 @@ const mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        addPost: () => {
-            dispatch(addPostAC())
+        addPost: (text: string) => {
+            dispatch(addPostAC(text))
         },
         updateNewPostText: (text: string) => {
             dispatch(updateNewPostTextAC(text))

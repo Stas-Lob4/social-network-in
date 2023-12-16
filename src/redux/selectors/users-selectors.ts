@@ -5,4 +5,3 @@ export const getTotalCount = (state: AppRootStateType) => state.usersReducer.use
 export const getCurrentPage = (state: AppRootStateType) => state.usersReducer.currentPage
 export const getPageSize = (state: AppRootStateType) => state.usersReducer.pageSize
 export const getFollowingInProgress = (state: AppRootStateType) => state.usersReducer.followingInProgress
-export const getI = (state: AppRootStateType) => state.usersReducer.followingInProgress

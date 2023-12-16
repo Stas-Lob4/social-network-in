@@ -8,8 +8,51 @@ const initState: ProfilePageType =  {
         {id: v1(), text: 'Hello World!', likeCount: 5},
         {id: v1(), text: 'Hello World!', likeCount: 1},
     ],
-    newPostText: '',
     status: ''
+}
+
+export const profileReducer = (state = initState, action: ActionProfileReducerType) => {
+    switch (action.type) {
+        case 'ADD-POST' :
+            return {...state, posts: [...state.posts, {id: v1(), text: action.text, likeCount: 0}]}
+        case 'REMOVE-POST':
+            return {...state, posts: state.posts.filter(p => p.id !== action.id)}
+        case 'UPDATE-NEW-POST-TEXT':
+            return {...state, newPostText: action.text}
+        case 'SET-USER-PROFILE':{
+            return {...state, profile: {...action.profile}}
+        }
+        case 'SET-USER-STATUS':{
+            return {...state, status: action.status}
+        }
+        default:
+            return state
+    }
+}
+
+
+type AddPostActionType = ReturnType<typeof addPostAC>
+export const addPostAC = (text: string) => {
+    return {type: 'ADD-POST', text} as const
+}
+type RemovePostActionType = ReturnType<typeof removePostAC>
+export const removePostAC = (id: string) => {
+    return {type: 'REMOVE-POST', id} as const
+}
+
+type UpdateNewPostTextActionType = ReturnType<typeof updateNewPostTextAC>
+export const updateNewPostTextAC = (text: string) => {
+    return {type: 'UPDATE-NEW-POST-TEXT', text} as const
+}
+
+type SetUserProfileActionType = ReturnType<typeof setUserProfileAC>
+export const setUserProfileAC = (profile: ProfileType) => {
+    return {type: 'SET-USER-PROFILE', profile} as const
+}
+
+type SetUserStatusActionType = ReturnType<typeof setUserStatusAC>
+export const setUserStatusAC = (status: string) => {
+    return {type: 'SET-USER-STATUS', status} as const
 }
 
 export type PostType = {
@@ -43,46 +86,11 @@ export type ProfileType = {
 export type ProfilePageType = {
     profile: ProfileType | null
     posts: PostType[]
-    newPostText: string
     status: string
 }
 
-export const profileReducer = (state = initState, action: ActionProfileReducerType) => {
-    switch (action.type) {
-        case 'ADD-POST' :
-            return {...state, posts: [...state.posts, {id: v1(), text: state.newPostText, likeCount: 0}],
-                    newPostText: ''}
-        case 'UPDATE-NEW-POST-TEXT':
-            return {...state, newPostText: action.text}
-        case 'SET-USER-PROFILE':{
-            return {...state, profile: {...action.profile}}
-        }
-        case 'SET-USER-STATUS':{
-            return {...state, status: action.status}
-        }
-        default:
-            return state
-    }
-}
-
-export type ActionProfileReducerType = AddPostActionType | UpdateNewPostTextActionType | SetUserProfileActionType | SetUserStatusActionType
-
-type AddPostActionType = ReturnType<typeof addPostAC>
-export const addPostAC = () => {
-    return {type: 'ADD-POST'} as const
-}
-
-type UpdateNewPostTextActionType = ReturnType<typeof updateNewPostTextAC>
-export const updateNewPostTextAC = (text: string) => {
-    return {type: 'UPDATE-NEW-POST-TEXT', text} as const
-}
-
-type SetUserProfileActionType = ReturnType<typeof setUserProfileAC>
-export const setUserProfileAC = (profile: ProfileType) => {
-    return {type: 'SET-USER-PROFILE', profile} as const
-}
-
-type SetUserStatusActionType = ReturnType<typeof setUserStatusAC>
-export const setUserStatusAC = (status: string) => {
-    return {type: 'SET-USER-STATUS', status} as const
-}
+export type ActionProfileReducerType = AddPostActionType
+    | UpdateNewPostTextActionType
+    | SetUserProfileActionType
+    | SetUserStatusActionType
+    | RemovePostActionType

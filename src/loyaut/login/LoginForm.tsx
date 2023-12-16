@@ -11,7 +11,7 @@ interface LoginFormProps {
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({onSubmit}) => {
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+    const {register, handleSubmit, formState: {errors} }= useForm<FormData>();
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -20,7 +20,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({onSubmit}) => {
                 <input
                     type="text"
                     id="username"
-                    {...register('email', { required: 'Username is required' })}
+                    {...register('email', {required: 'Username is required'})}
                 />
                 {errors.email && <p>{errors.email.message}</p>}
             </div>
@@ -29,11 +29,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({onSubmit}) => {
                 <input
                     type="password"
                     id="password"
-                    {...register('password', { required: 'Password is required' })}
+                    {...register('password', {required: 'Password is required'})}
                 />
                 {errors.password && <p>{errors.password.message}</p>}
             </div>
             <button type="submit">Login</button>
         </form>
     );
-};
+}
