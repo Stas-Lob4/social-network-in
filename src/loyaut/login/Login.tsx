@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from '../../redux/store';
 import {Navigate} from 'react-router-dom';
-import {loginProfileTC} from '../../redux/thunks/auth-thunk';
+import {loginProfileTC} from '../../redux/thunks/authThunk';
 import {LoginForm} from './LoginForm';
 import {LoginDataType} from '../../api/auth-api';
 

@@ -1,13 +1,14 @@
 import {Dispatch} from 'redux';
-import {logoutAC, setAuthUserDataAC} from '../reducers/auth-reducer';
+import {logoutAC, setAuthUserDataAC} from '../reducers/authReducer';
 import {authApi, LoginDataType} from '../../api/auth-api';
 import {AppDispatch} from '../store';
 import {profileApi} from '../../api/profile-api';
-import {setUserProfileAC} from '../reducers/profile-reducer';
-import {setInitialStatusAppAC} from '../reducers/app-reducer';
+import {setUserProfileAC} from '../reducers/profileReducer';
+import {setInitialAppAC} from '../reducers/appReducer';
+
 
 export const setAuthUserDataTC = () => (dispatch: Dispatch) => {
-    dispatch(setInitialStatusAppAC(true))
+    dispatch(setInitialAppAC(true))
     authApi.getAuth()
         .then(response => {
             if (response.data.resultCode === 0) {
@@ -17,7 +18,7 @@ export const setAuthUserDataTC = () => (dispatch: Dispatch) => {
                 })
             }
         })
-        .finally(() => dispatch(setInitialStatusAppAC(false)))
+        .finally(() => dispatch(setInitialAppAC(false)))
 }
 
 export const loginProfileTC = (data: LoginDataType) => (dispatch: AppDispatch) => {

@@ -1,13 +1,13 @@
 import React from 'react';
 import {Profile} from './Profile';
-import {ProfileType} from '../../redux/reducers/profile-reducer';
+import {ProfileType} from '../../redux/reducers/profileReducer';
 import {AppDispatch, AppRootStateType} from '../../redux/store';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {withRouter} from '../../utils/withRouter';
 import {NavigateFunction, Params} from 'react-router';
 import {WithAuthRedirect} from '../../hoc/withAuthRedirect';
-import {setUserProfileTC, setUserStatusTC, updateUserStatusTC} from '../../redux/thunks/profile-thunk';
+import {setUserProfileTC, setUserStatusTC, updateUserStatusTC} from '../../redux/thunks/profileThunk';
 import {redirect} from 'react-router-dom';
 
 

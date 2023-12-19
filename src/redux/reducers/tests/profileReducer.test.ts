@@ -1,4 +1,4 @@
-import {addPostAC, PostType, ProfilePageType, profileReducer, ProfileType, removePostAC} from './profile-reducer';
+import {addPostAC, ProfilePageType, profileReducer, ProfileType, removePostAC} from '../profileReducer';
 
 
 
@@ -10,7 +10,6 @@ let state: ProfilePageType = {
         {id: '4', text: 'Dada', likeCount: 11}
     ],
     profile: null,
-    newPostText: '',
     status: ''
 }
 

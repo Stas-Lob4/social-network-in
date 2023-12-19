@@ -1,10 +1,10 @@
 import {AppDispatch, AppRootStateType} from '../../redux/store';
 import {connect} from 'react-redux';
 import {Users} from './Users/Users';
-import {setCurrentPageAC, setUsersAC, setUsersTotalCountAC, UserType} from '../../redux/reducers/users-reducer';
+import {setCurrentPageAC, setUsersAC, setUsersTotalCountAC, UserType} from '../../redux/reducers/usersReducer';
 import React from 'react';
 import {usersApi} from '../../api/users-api';
-import {followTC, getUsersTC, unfollowTC} from '../../redux/thunks/users-thunks';
+import {followTC, getUsersTC, unfollowTC} from '../../redux/thunks/usersThunks';
 import {WithAuthRedirect, WithAuthRedirectPropsType} from '../../hoc/withAuthRedirect';
 import {
     getCurrentPage,
@@ -12,8 +12,8 @@ import {
     getPageSize,
     getTotalCount,
     getUsers
-} from '../../redux/selectors/users-selectors';
-import {getIsAuth} from '../../redux/selectors/auth-selectors';
+} from '../../redux/selectors/usersSelectors';
+import {getIsAuth} from '../../redux/selectors/authSelectors';
 
 
 type StateType = {}

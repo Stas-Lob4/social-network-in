@@ -5,7 +5,7 @@ import {BoxLogo, ButtonStyled, HeaderStyled, Image, LoginBlock} from './HeaderSt
 import {NavLink} from 'react-router-dom';
 import {authApi} from '../../api/auth-api';
 import {useDispatch} from 'react-redux';
-import {logoutProfileTC} from '../../redux/thunks/auth-thunk';
+import {logoutProfileTC} from '../../redux/thunks/authThunk';
 
 type PropsType = {
     isAuth: boolean

@@ -1,4 +1,4 @@
-import {setUserProfileAC, setUserStatusAC} from '../reducers/profile-reducer';
+import {setUserProfileAC, setUserStatusAC} from '../reducers/profileReducer';
 import {AppDispatch, AppThunk} from '../store';
 import {profileApi} from '../../api/profile-api';
 

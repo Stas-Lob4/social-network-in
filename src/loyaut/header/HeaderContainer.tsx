@@ -2,7 +2,7 @@ import React from 'react';
 import {Header} from './Header';
 import {connect} from 'react-redux';
 import {AppDispatch, AppRootStateType} from '../../redux/store';
-import {setAuthUserDataTC} from '../../redux/thunks/auth-thunk';
+import {setAuthUserDataTC} from '../../redux/thunks/authThunk';
 
 type PropsType = {}
 class HeaderContainer extends React.Component<HeaderPropsType, PropsType> {

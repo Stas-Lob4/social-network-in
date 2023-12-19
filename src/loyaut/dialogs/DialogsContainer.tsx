@@ -1,18 +1,26 @@
-import {addMessageAC, deleteMessageAC, updateNewMessageText, UsersType} from '../../redux/reducers/dialog-reducer';
+import {
+    addMessageAC, deleteMessageAC,
+    DialogType, updateNewMessageTextAC,
+} from '../../redux/reducers/dialogReducer';
 import {connect} from 'react-redux';
 import {Dialogs} from './Dialogs/Dialogs';
-import {AppRootStateType} from '../../redux/store';
-import {compose, Dispatch} from 'redux';
+import {AppDispatch, AppRootStateType} from '../../redux/store';
+import {compose} from 'redux';
 import React from 'react';
-import {Navigate} from 'react-router-dom';
 import {WithAuthRedirect, WithAuthRedirectPropsType} from '../../hoc/withAuthRedirect';
+import {addMessageTC, deleteMessageTC, setDialogsTC} from '../../redux/thunks/dialogsThunk';
 
 type PropsType = {}
 
 class DialogsContainer extends React.Component<DialogPropsType, PropsType> {
+
+    componentDidMount() {
+        this.props.setDialogsTC()
+    }
+
     render() {
         return <Dialogs
-            users={this.props.users}
+            dialogs={this.props.dialogs}
             updateNewMessageText={this.props.updateNewMessageText}
             addNewMessage={this.props.addNewMessage}
             deleteMessage={this.props.deleteMessage}
@@ -22,33 +30,37 @@ class DialogsContainer extends React.Component<DialogPropsType, PropsType> {
 
 
 type MapStateToPropsType = {
-    users: UsersType
+    dialogs: DialogType[]
     isAuth: boolean
 }
 
 type MapDispatchToPropsType = {
-    updateNewMessageText: (userId: string, text: string) => void
-    addNewMessage: (userId: string) => void
-    deleteMessage: (userId: string, idMessage: string) => void
+    updateNewMessageText: (userId: number, text: string) => void
+    addNewMessage: (userId: number,text: string) => void
+    deleteMessage: (messageId: string) => void
+    setDialogsTC: () => void
 }
 let mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
     return {
-        users: state.dialogReducer,
+        dialogs: state.dialogReducer.dialogs,
         isAuth: state.authReducer.isAuth
     }
 }
 
-let mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => {
+let mapDispatchToProps = (dispatch: AppDispatch): MapDispatchToPropsType => {
     return {
-        updateNewMessageText: (userId: string, text: string) => {
-            dispatch(updateNewMessageText(userId, text))
+        updateNewMessageText: (userId: number, text: string) => {
+            dispatch(updateNewMessageTextAC(userId, text))
         },
-        addNewMessage: (userId: string) => {
-            dispatch(addMessageAC(userId))
+        addNewMessage: (userId: number, text: string) => {
+            dispatch(addMessageTC(userId, text))
         },
-        deleteMessage: (userId: string, idMessage: string) => {
-            dispatch(deleteMessageAC(userId, idMessage))
+        deleteMessage: (messageId: string) => {
+            dispatch(deleteMessageTC(messageId))
         },
+        setDialogsTC: () => {
+           dispatch(setDialogsTC())
+        }
     }
 }
 

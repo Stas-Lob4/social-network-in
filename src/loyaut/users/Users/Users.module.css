@@ -15,7 +15,7 @@
     gap: 20px;
     border: 1px solid white;
     border-radius: 20px;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
 }
 
 .pagination li a {
@@ -34,7 +34,7 @@
     justify-content: center;
     display: flex;
     flex-wrap: wrap;
-    gap: 50px;
+    gap: 40px;
 }
 
 .user_box {

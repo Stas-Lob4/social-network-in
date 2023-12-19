@@ -1,7 +1,6 @@
-import React, {FC, useEffect} from 'react';
-import {Footer} from './loyaut/footer/Footer';
+import React from 'react';
 import {Navbar} from './loyaut/navbar/Navbar';
-import {redirect, Route, Routes} from 'react-router-dom';
+import {Navigate, redirect, Route, Routes} from 'react-router-dom';
 import {
     AppFooterStyled,
     AppHeaderStyled,
@@ -19,7 +18,7 @@ import {connect, useSelector} from 'react-redux';
 import {AppDispatch, AppRootStateType} from './redux/store';
 import {compose} from 'redux';
 import {withRouter} from './utils/withRouter';
-import {setAuthUserDataTC} from './redux/thunks/auth-thunk';
+import {setAuthUserDataTC} from './redux/thunks/authThunk';
 import {HashLoader} from 'react-spinners';
 
 
@@ -54,7 +53,7 @@ class App extends React.Component<AppPropsType, AppStateType> {
                     </AppMainNavbarStyled>
                     <AppMainRoutesStyled>
                         <Routes>
-                            <Route path={'/'} element={<ProfileContainer/>}/>
+                            <Route path={'/'} element={<Navigate to={'/profile'}/>}/>
                             <Route path={'/profile/:userId?'} element={<ProfileContainer/>}/>
                             <Route path={'/dialogs/*'} element={<DialogsContainer/>}/>
                             <Route path={'/friends'} element={<UsersContainer/>}/>
@@ -62,9 +61,6 @@ class App extends React.Component<AppPropsType, AppStateType> {
                         </Routes>
                     </AppMainRoutesStyled>
                 </AppMainStyled>
-                <AppFooterStyled>
-                    <Footer/>
-                </AppFooterStyled>
             </AppStyled>
         );
     }
@@ -76,7 +72,7 @@ type MapStateToPropsType = {
 }
 const mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
     return {
-        initialApp: state.app.initialApp,
+        initialApp: state.appReducer.initialApp,
         isAuth: state.authReducer.isAuth
     }
 }

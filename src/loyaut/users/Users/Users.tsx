@@ -5,7 +5,7 @@ import styles from './Users.module.css'
 import ReactPaginate from 'react-paginate';
 import {HashLoader} from 'react-spinners';
 import {NavLink} from 'react-router-dom';
-import {UserType} from '../../../redux/reducers/users-reducer';
+import {UserType} from '../../../redux/reducers/usersReducer';
 
 type PropsType = {
     users: UserType[]

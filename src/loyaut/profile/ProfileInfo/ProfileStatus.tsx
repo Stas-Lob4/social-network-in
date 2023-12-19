@@ -8,10 +8,6 @@ export const ProfileStatus: React.FC<PropsType> = ({status, setStatus}) => {
 
     const [editMode, setEditMode] = useState(false)
 
-    useEffect(() => {
-        setStatus(status)
-    }, [status])
-
     const activateEditMode = () => setEditMode(true)
     const deactivateEditMode = () => setEditMode(false)
 
@@ -21,7 +17,7 @@ export const ProfileStatus: React.FC<PropsType> = ({status, setStatus}) => {
 
     return (
         <div>
-            {!editMode ? <span onDoubleClick={activateEditMode}>{status || 'no status'}</span>
+            {!editMode ? <span onDoubleClick={activateEditMode}>{ status ? status : 'no status'}</span>
                        : <input onChange={onChangeHandler} autoFocus={true} onBlur={deactivateEditMode} value={status}/>}
         </div>
     );

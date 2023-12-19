@@ -6,7 +6,7 @@ import {
     setUsersTotalCountAC,
     toggleIsFollowingProgressAC,
     unfollowAC
-} from '../reducers/users-reducer';
+} from '../reducers/usersReducer';
 import {usersApi} from '../../api/users-api';
 import {AppThunk} from '../store';
 

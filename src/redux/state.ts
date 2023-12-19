@@ -1,6 +1,6 @@
 import {v1} from 'uuid';
-import {ActionDialogReducerType, dialogReducer} from './reducers/dialog-reducer';
-import {ActionProfileReducerType, profileReducer} from './reducers/profile-reducer';
+import {ActionDialogReducerType, dialogReducer} from './reducers/dialogReducer';
+import {ActionProfileReducerType, profileReducer} from './reducers/profileReducer';
 
 // export const state: StateType = {
 //     profilePage: {

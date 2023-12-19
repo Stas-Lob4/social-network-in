@@ -1,18 +1,18 @@
-import {AnyAction, applyMiddleware,combineReducers ,legacy_createStore as createStore} from 'redux';
-import {profileReducer} from "./reducers/profile-reducer";
-import {dialogReducer} from "./reducers/dialog-reducer";
-import {sidebarReducer} from "./reducers/sidebar-reducer";
-import {usersReducer} from './reducers/users-reducer';
-import {authReducer} from './reducers/auth-reducer';
+import {AnyAction, applyMiddleware, combineReducers, legacy_createStore as createStore} from 'redux';
+import {profileReducer} from "./reducers/profileReducer";
+import {dialogReducer} from "./reducers/dialogReducer";
+import {sidebarReducer} from "./reducers/sidebarReducer";
+import {usersReducer} from './reducers/usersReducer';
+import {authReducer} from './reducers/authReducer';
 import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk';
-import {appReducer} from './reducers/app-reducer';
+import {appReducer} from './reducers/appReducer';
 
 const rootReducer = combineReducers({
     profileReducer: profileReducer,
     dialogReducer: dialogReducer,
     usersReducer: usersReducer,
     authReducer: authReducer,
-    app: appReducer
+    appReducer: appReducer
     //sidebarReducer: sidebarReducer
 })
 
