@@ -8,8 +8,7 @@ export const Navbar = () => {
                 <NavbarLinkStyled to={"/profile/:userId"}>My profile</NavbarLinkStyled>
                 <NavbarLinkStyled to={"/dialogs"}>Dialogs</NavbarLinkStyled>
                 <NavbarLinkStyled to={"/friends"}>Friends</NavbarLinkStyled>
-                <NavbarLinkStyled to={"/#"}>Groups</NavbarLinkStyled>
-                <NavbarLinkStyled to={"/#"}>Settings</NavbarLinkStyled>
+                <NavbarLinkStyled to={"/chat"}>Samurai-chat</NavbarLinkStyled>
         </NavbarStyled>
     );
 };

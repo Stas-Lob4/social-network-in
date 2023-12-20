@@ -20,6 +20,7 @@ import {compose} from 'redux';
 import {withRouter} from './utils/withRouter';
 import {setAuthUserDataTC} from './redux/thunks/authThunk';
 import {HashLoader} from 'react-spinners';
+import {Chat} from './loyaut/chat/Chat';
 
 
 
@@ -58,6 +59,7 @@ class App extends React.Component<AppPropsType, AppStateType> {
                             <Route path={'/dialogs/*'} element={<DialogsContainer/>}/>
                             <Route path={'/friends'} element={<UsersContainer/>}/>
                             <Route path={'/login'} element={<Login/>}/>
+                            <Route path={'/chat'} element={<Chat/>}/>
                         </Routes>
                     </AppMainRoutesStyled>
                 </AppMainStyled>

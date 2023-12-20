@@ -3,9 +3,10 @@ import styled from 'styled-components';
 
 type TextareaBlock = {
     onClick: (text: string) => void
+    disabled?: boolean
 }
 export const
-    TextareaBlock: React.FC<TextareaBlock> = ({onClick}) => {
+    TextareaBlock: React.FC<TextareaBlock> = ({onClick, disabled}) => {
     const [text, setText] = useState<string>('');
 
     const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -28,8 +29,8 @@ export const
 
     return (
         <TextAreaBlockStyled>
-            <Textarea onChange={onChangeHandler} value={text} onKeyPress={onKeyPressHandler}></Textarea>
-            <TextareaButton onClick={onClickHandler}>+</TextareaButton>
+            <Textarea maxLength={100} onChange={onChangeHandler} value={text} onKeyPress={onKeyPressHandler}></Textarea>
+            <TextareaButton disabled={disabled} onClick={onClickHandler}>+</TextareaButton>
         </TextAreaBlockStyled>
     );
 };
