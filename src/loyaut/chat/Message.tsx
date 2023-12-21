@@ -10,6 +10,7 @@ import {
     UserNameToMessage,
     UserPhotoToMessage
 } from './ChatStyled';
+import users_logo from '../../assets/img/user-icon.jpg'
 
 export const Message: React.FC<{ message: ChatMessageType, key: number }> = React.memo(({message, key}) => {
     const userId = useSelector<AppRootStateType, number | null>(state => state.authReducer.userId)
@@ -25,7 +26,7 @@ export const Message: React.FC<{ message: ChatMessageType, key: number }> = Reac
     }
 
     return <MessageItem key={key}>
-        <UserPhotoToMessage src={message.photo}/>
+        <UserPhotoToMessage src={message.photo ? message.photo : users_logo}/>
         <MessageBoxText>
             <UserNameToMessage>{message.userName}</UserNameToMessage>
             <TextMessage>{message.message}</TextMessage>

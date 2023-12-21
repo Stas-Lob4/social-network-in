@@ -28,9 +28,6 @@ input, select, button, textarea {
   font-size: 100%; 			/* делаем размер шрифтов везде одинаковым */
   outline: none;
 }
-input[type="text"], input[type="password"], textarea {
-  padding: 0; 				/* убираем внутренние отступы для текстовых полей */
-}
 input[type="checkbox"] { 		/* вертикальное выравнивание чекбоксов и радиобатонов относительно меток */
   vertical-align: bottom;
 }

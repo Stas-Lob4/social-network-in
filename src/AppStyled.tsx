@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
 export const AppStyled = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #141414;
-  width: 100%;
-  min-height: 100vh;
-  overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2d2d2b;
+    width: 100%;
+    min-height: 100vh;
+    overflow: auto;
 `
 export const AppHeaderStyled = styled.header`
   max-width: 1150px;

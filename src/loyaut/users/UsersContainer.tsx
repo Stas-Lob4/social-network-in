@@ -19,6 +19,8 @@ import {getIsAuth} from '../../redux/selectors/authSelectors';
 type StateType = {}
 
 class UsersContainer extends React.Component<UsersPropsType, StateType> {
+
+
     componentDidMount() {
         if (this.props.users.length === 0) {
             this.props.getUsersTC()
@@ -26,7 +28,8 @@ class UsersContainer extends React.Component<UsersPropsType, StateType> {
     }
 
     onPageChanged = (pageNumber: number) => {
-        usersApi.getCurrentPage(pageNumber, this.props.pageSize)
+        const pageSize = 10;
+        usersApi.getCurrentPage(pageNumber, this.props.pageSize <= 10 ? this.props.pageSize :pageSize)
             .then(response => {
                 this.props.setUsers(response.data.items);
                 this.props.setCurrentPage(pageNumber)

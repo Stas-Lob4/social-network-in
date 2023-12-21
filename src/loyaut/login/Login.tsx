@@ -5,6 +5,9 @@ import {Navigate} from 'react-router-dom';
 import {loginProfileTC} from '../../redux/thunks/authThunk';
 import {LoginForm} from './LoginForm';
 import {LoginDataType} from '../../api/auth-api';
+import {Container} from '../../component/Container';
+import {LoginSectionStyled} from './LoginSectionStyled';
+import {FlexWrap} from '../../component/FlexWrap';
 
 export const Login = () => {
     const dispatch = useDispatch()
@@ -18,10 +21,15 @@ export const Login = () => {
     }
 
     return (
-        <div>
-            {isAuth ? <Navigate to={'/'}/>
-                    : <LoginForm onSubmit={login}/>}
-        </div>
+        <LoginSectionStyled>
+            <Container>
+                <FlexWrap justify={'center'} align={'center'}>
+                    {isAuth ? <Navigate to={'/'}/>
+                        : <LoginForm onSubmit={login}/>}
+                </FlexWrap>
+            </Container>
+        </LoginSectionStyled>
     );
 };
+
 

@@ -13,6 +13,7 @@ import {AppThunk} from '../store';
 export const getUsersTC = (): AppThunk => (dispatch: Dispatch) => {
     usersApi.getUsers()
         .then(response => {
+            console.log(response.data)
             dispatch(setUsersAC(response.data.items))
             dispatch(setUsersTotalCountAC(response.data.totalCount))
         })

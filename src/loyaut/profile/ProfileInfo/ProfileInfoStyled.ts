@@ -7,8 +7,8 @@ export const ProfileInfoContainer = styled.div`
     
 `
 export const ProfileImg = styled.img`
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     border-radius: 50px;
 `
 export const ProfileTitle = styled.h2`
@@ -17,16 +17,17 @@ export const ProfileTitle = styled.h2`
 export const ContactsBox = styled.div`
     background: #39625f;
     padding: 25px;
-    border-radius: 50px;
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
+    max-width: 40%;
 `
 
 export const ContactsTitle= styled.h2`
-    justify-self: center;
+    text-align: center;
 `
 export const ContactsList= styled.ul`
-
+    width: 400px;
 `
 export const ContactsItem= styled.li`
     a {
@@ -42,8 +43,11 @@ export const ContactsItem= styled.li`
 export const ProfileInfoBox = styled.div`
     display: flex;
     gap: 20px;
-    justify-content: space-around;
-    width: 100vh;
+    width: 100%;
+    height: 200px;
+    background: #39625f;
+    padding: 15px;
+    border-radius: 15px;
 `
 
 export const ButtonInput = styled.button`

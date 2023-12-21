@@ -10,35 +10,38 @@ import {
     ProfileInfoStyled,
     ProfileTitle
 } from './ProfileInfoStyled';
+import {useSelector} from 'react-redux';
+import {AppRootStateType} from '../../../redux/store';
+import {UserType} from '../../../redux/reducers/usersReducer';
 
 
 type ProfileInfoPropsType = {
     profile: ProfileType
     setStatus: (status: string) => void
     status: string
+    users: UserType[]
 }
 
 
-export const ProfileInfo: FC<ProfileInfoPropsType> = ({profile, setStatus, status}) => {
+export const ProfileInfo: FC<ProfileInfoPropsType> = ({profile, setStatus, status, users}) => {
+    const myId = useSelector<AppRootStateType, number | null>(state => state.authReducer.userId)
 
 
-    const map_contacts = Object.entries(profile.contacts).map(([key, value]) => {
-        return <ContactsItem><b>{key}:</b>{value ? <a href={value ? value : undefined}>_{value}</a> : ' none'}</ContactsItem>
-        })
     return (
         <ProfileInfoStyled>
             <ProfileInfoContainer>
 
                 <ProfileInfoBox>
+                    <ProfileImg src={profile.photos.large ? profile.photos.large : user_icon}/>
                     <div>
-                        <ProfileImg src={profile.photos.large ? profile.photos.large : user_icon}/>
                         <ProfileTitle>My name: {profile.fullName}</ProfileTitle>
                         <ProfileStatus status={status} setStatus={setStatus}/>
+                        {profile.userId === myId
+                            ? <b style={{color: 'Black'}}>Vseti</b>
+                            : <button>Follov</button>
+                        }
                     </div>
-                    <ContactsBox>
-                        <ContactsTitle>Contacts:</ContactsTitle>
-                        <ContactsList>{map_contacts}</ContactsList>
-                    </ContactsBox>
+
                 </ProfileInfoBox>
             </ProfileInfoContainer>
         </ProfileInfoStyled>

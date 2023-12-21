@@ -9,6 +9,9 @@ import {NavigateFunction, Params} from 'react-router';
 import {WithAuthRedirect} from '../../hoc/withAuthRedirect';
 import {setUserProfileTC, setUserStatusTC, updateUserStatusTC} from '../../redux/thunks/profileThunk';
 import {redirect} from 'react-router-dom';
+import {UserType} from '../../redux/reducers/usersReducer';
+import {getUsersTC} from '../../redux/thunks/usersThunks';
+import {usersApi} from '../../api/users-api';
 
 
 type StateType = {
@@ -18,10 +21,16 @@ type StateType = {
 class ProfileContainer extends React.Component<ProfilePropsType, StateType> {
     constructor(props: any) {
         super(props);
-        this.state = {userId: undefined}
+        this.state = {
+            userId: undefined
+        }
+
     }
 
+
+
     componentDidMount() {
+
         let userId = this.props.router.params.userId ? +this.props.router.params.userId : null;
         if (!userId) {
             userId = this.props.userId;
@@ -57,6 +66,7 @@ class ProfileContainer extends React.Component<ProfilePropsType, StateType> {
                         profile={this.props.profile}
                         setStatus={this.props.updateStatusProfile}
                         status={this.props.status}
+                        users={this.props.users}
         />;
     }
 }
@@ -66,19 +76,24 @@ type MapStateToPropsType = {
     isAuth: boolean
     userId: number | null
     status: string
+    users: UserType[]
+    userTotalCount: number
 }
 const mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
     return {
         userId: state.authReducer.userId,
         profile: state.profileReducer.profile,
         isAuth: state.authReducer.isAuth,
-        status: state.profileReducer.status
+        status: state.profileReducer.status,
+        users: state.usersReducer.users,
+        userTotalCount: state.usersReducer.userTotalCount
     }
 }
 
 type MapDispatchToPropsType = {
     setUserProfile: (id: number) => void
     updateStatusProfile: (status: string) => void
+    getUsersTC: () => void
 }
 
 const mapDispatchToProps = (dispatch: AppDispatch): MapDispatchToPropsType => {
@@ -89,6 +104,9 @@ const mapDispatchToProps = (dispatch: AppDispatch): MapDispatchToPropsType => {
         },
         updateStatusProfile: (status: string) => {
             dispatch(updateUserStatusTC(status))
+        },
+        getUsersTC: () => {
+            dispatch(getUsersTC())
         }
     }
 }

@@ -29,7 +29,7 @@ export const MessageItem = styled.li`
     gap: 30px;
     max-height: 70px;
     border-radius: 20px;
-    background: black;
+    background: #343434;
     max-width: 60%;
     padding: 5px 30px 5px 5px;
 `
@@ -42,9 +42,10 @@ export const MyMessageItem = styled.li`
     gap: 30px;
     max-height: 70px;
     border-radius: 20px;
-    background: dodgerblue;
+    background: #78a9e0;
     min-width: 60%;
     padding: 5px 5px 5px 30px;
+    color: black;
 `
 
 export const MessageBoxText = styled.div`
