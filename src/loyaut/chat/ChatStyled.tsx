@@ -7,12 +7,13 @@ export const ChatStyled = styled.section`
 `
 
 export const LoaderContainer = styled.div`
+    width: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
 `
 
 export const ChatMessagesList = styled.ul`
+    min-height: 70vh;
     max-height: 70vh;
     overflow-y: auto;
     display: flex;

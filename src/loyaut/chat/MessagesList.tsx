@@ -5,7 +5,7 @@ import {ChatMessageType} from '../../api/chatApi';
 import {Message} from './Message';
 import {ChatMessagesList} from './ChatStyled';
 
-export const Messages: React.FC = () => {
+export const MessagesList: React.FC = () => {
     let messages = useSelector<AppRootStateType, ChatMessageType[]>(state => state.chatReducer.messages)
     const messagesAnchorRef = useRef<HTMLDivElement>(null);
     const [isAutoScroll, setIsAutoScroll] = useState(true)

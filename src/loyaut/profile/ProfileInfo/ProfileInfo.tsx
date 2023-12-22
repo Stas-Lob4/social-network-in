@@ -13,6 +13,7 @@ import {
 import {useSelector} from 'react-redux';
 import {AppRootStateType} from '../../../redux/store';
 import {UserType} from '../../../redux/reducers/usersReducer';
+import styled from 'styled-components';
 
 
 type ProfileInfoPropsType = {
@@ -33,17 +34,32 @@ export const ProfileInfo: FC<ProfileInfoPropsType> = ({profile, setStatus, statu
 
                 <ProfileInfoBox>
                     <ProfileImg src={profile.photos.large ? profile.photos.large : user_icon}/>
-                    <div>
+                    <ProfileInfoData>
                         <ProfileTitle>My name: {profile.fullName}</ProfileTitle>
                         <ProfileStatus status={status} setStatus={setStatus}/>
                         {profile.userId === myId
-                            ? <b style={{color: 'Black'}}>Vseti</b>
+                            ? <BoxTextStatus>Даже в самой худшей судьбе есть возможности для счастливых перемен.</BoxTextStatus>
                             : <button>Follov</button>
                         }
-                    </div>
+                    </ProfileInfoData>
 
                 </ProfileInfoBox>
             </ProfileInfoContainer>
         </ProfileInfoStyled>
     );
 };
+export const ProfileInfoData = styled.div`
+    padding-top: 20px;
+    line-height: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+`
+
+export const BoxTextStatus = styled.b`
+    width: 230px;
+    background: white;
+    border-radius: 20px;
+    padding: 10px;
+    color: #262626;
+`

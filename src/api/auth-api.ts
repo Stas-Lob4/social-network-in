@@ -2,20 +2,20 @@ import {instance} from './api-utils';
 
 
 export type LoginDataType = {
-   email: string
-   password: string
-   // rememberMe?: boolean
-   // captcha?: boolean
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha: string | null
 }
 
 export const authApi = {
-    getAuth(){
+    getAuth() {
         return instance.get(`auth/me`)
     },
-    addAuth(data: LoginDataType){
+    addAuth(data: LoginDataType) {
         return instance.post(`auth/login`, data)
     },
-    deleteAuth(){
+    deleteAuth() {
         return instance.delete(`auth/login`)
     },
 }

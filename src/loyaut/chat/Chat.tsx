@@ -5,12 +5,14 @@ import {ChatStatusType} from '../../api/chatApi';
 import {useDispatch, useSelector} from 'react-redux';
 import {sendMessage, startMessagesListening, stopMessagesListening} from '../../redux/reducers/chatReducer';
 import {AppRootStateType} from '../../redux/store';
-import {Messages} from './Messages';
+import {MessagesList} from './MessagesList';
 import {ChatStyled, InputMessageContainer, LoaderContainer} from './ChatStyled';
+import {Navigate} from 'react-router-dom';
 
 
 export const Chat = () => {
     const status = useSelector<AppRootStateType, ChatStatusType>(state => state.chatReducer.status)
+    const isAuth = useSelector<AppRootStateType, boolean>(state => state.authReducer.isAuth)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -38,10 +40,13 @@ export const Chat = () => {
             {status === 'error' && <div>Some error occured. Please refresh the page</div>}
         </ChatStyled>
     }
+    if(!isAuth){
+        return <Navigate to={'/'}/>
+    }
 
     return (
         <ChatStyled>
-            <Messages/>
+            <MessagesList/>
             <InputMessageContainer>
                 <TextareaBlock disabled={status !== 'ready'} onClick={sendMessageHandler}/>
             </InputMessageContainer>

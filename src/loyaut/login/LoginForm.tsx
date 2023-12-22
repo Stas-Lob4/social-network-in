@@ -3,16 +3,19 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import styled from 'styled-components';
 
 type FormData = {
-    email: string;
-    password: string;
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha: string | null
 };
 
 interface LoginFormProps {
+    captchaUrl: string | null
     onSubmit: SubmitHandler<FormData>;
 }
 
-export const LoginForm: React.FC<LoginFormProps> = ({onSubmit}) => {
-    const {register, handleSubmit, formState: {errors} }= useForm<FormData>();
+export const LoginForm: React.FC<LoginFormProps> = ({onSubmit, captchaUrl}) => {
+    const {register, handleSubmit, formState: {errors}} = useForm<FormData>();
 
     return (
         <FormStyled onSubmit={handleSubmit(onSubmit)}>
@@ -35,6 +38,23 @@ export const LoginForm: React.FC<LoginFormProps> = ({onSubmit}) => {
                 />
                 {errors.password && <p>{errors.password.message}</p>}
             </div>
+
+            {captchaUrl && <img src={captchaUrl} alt="Catcha"/>}
+            {captchaUrl &&
+                <InputForm
+                    type="text"
+                    id="captcha"
+                    placeholder={'Symbols from image'}
+                    {...register('captcha')}
+                />}
+            <CheckBox>
+                <InputCheckBox
+                    type="checkbox"
+                    id="rememberMe"
+                    {...register('rememberMe')}
+                />
+                <TitleCheckbox>remember me</TitleCheckbox>
+            </CheckBox>
             <ButtonSendForm type="submit">Login</ButtonSendForm>
         </FormStyled>
     );
@@ -84,4 +104,21 @@ export const ButtonSendForm = styled.button`
     &:hover {
         background: linear-gradient(91deg, #2E4CEE 9.91%, #221EBF 53.29%, #040F75 91.56%);
     }
+`
+
+export const CheckBox = styled.div`
+    padding-left: 20px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+`
+
+export const InputCheckBox = styled.input`
+ &[type="checkbox"] {
+     width: 20px; /* Устанавливает ширину чекбокса */
+     height: 20px; /* Устанавливает высоту чекбокса */
+ }
+`
+export const TitleCheckbox = styled.h4`
+    
 `

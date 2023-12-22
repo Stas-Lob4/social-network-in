@@ -15,17 +15,20 @@ export const Login = () => {
 
     }, []);
     const isAuth = useSelector<AppRootStateType, boolean>(state => state.authReducer.isAuth)
+    const captchaUrl = useSelector<AppRootStateType, string | null>(state => state.authReducer.captchaUrl)
 
     const login = (data: LoginDataType) => {
         dispatch(loginProfileTC(data))
+    }
+    if (isAuth){
+        return <Navigate to={'/'}/>
     }
 
     return (
         <LoginSectionStyled>
             <Container>
                 <FlexWrap justify={'center'} align={'center'}>
-                    {isAuth ? <Navigate to={'/'}/>
-                        : <LoginForm onSubmit={login}/>}
+                    <LoginForm captchaUrl={captchaUrl} onSubmit={login}/>
                 </FlexWrap>
             </Container>
         </LoginSectionStyled>

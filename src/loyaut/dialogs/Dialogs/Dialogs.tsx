@@ -8,24 +8,29 @@ import {useSelector} from 'react-redux';
 import {AppRootStateType} from '../../../redux/store';
 import {RequestStatusType} from '../../../redux/reducers/appReducer';
 import {HashLoader} from 'react-spinners';
+import {LoaderContainer} from '../../chat/ChatStyled';
 
 
 type PropsType = {
     dialogs: DialogType[]
     updateNewMessageText: (userId: number, text: string) => void
-    addNewMessage: (userId: number,text: string) => void
+    addNewMessage: (userId: number, text: string) => void
     deleteMessage: (messageId: string) => void
 }
 
 export const Dialogs: FC<PropsType> = (props) => {
     const appStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.appReducer.status)
-    const [userMessageId, setUserMessageId] = useState<null|number>(null);
+    const [userMessageId, setUserMessageId] = useState<null | number>(null);
 
     const onClickHandler = (id: number) => setUserMessageId(id)
 
-    if(appStatus === 'loading'){
-        return <HashLoader size={300}/>
-    } else if(props.dialogs.length === 0) {
+    if (appStatus === 'loading') {
+        return <DialogsStyled>
+            <LoaderContainer>
+                <HashLoader size={250}/>
+            </LoaderContainer>
+        </DialogsStyled>
+    } else if (props.dialogs.length === 0) {
         return <DialogsStyled>
             <ErrorTitle title={'no dialogs'}/>
         </DialogsStyled>
@@ -34,12 +39,12 @@ export const Dialogs: FC<PropsType> = (props) => {
     return <DialogsStyled>
         <DialogsUsersList dialogs={props.dialogs} onClickCallBack={onClickHandler}/>
         {!!userMessageId
-            ?<Dialog id={userMessageId}
-            updateNewMessageText={props.updateNewMessageText}
-            addNewMessage={props.addNewMessage}
-            deleteMessage={props.deleteMessage}
-        />
-            :<ErrorTitle title={'Select dialogue'}/>
+            ? <Dialog id={userMessageId}
+                      updateNewMessageText={props.updateNewMessageText}
+                      addNewMessage={props.addNewMessage}
+                      deleteMessage={props.deleteMessage}
+            />
+            : <ErrorTitle title={'Select dialogue'}/>
         }
     </DialogsStyled>
 }
