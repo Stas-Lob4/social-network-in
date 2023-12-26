@@ -5,7 +5,7 @@ import {NavbarLinkStyled, NavbarStyled} from './NavbarStyled';
 export const Navbar = () => {
     return (
         <NavbarStyled>
-                <NavbarLinkStyled to={"/profile/:userId"}>My profile</NavbarLinkStyled>
+                <NavbarLinkStyled to={"/profile"}>My profile</NavbarLinkStyled>
                 <NavbarLinkStyled to={"/dialogs"}>Dialogs</NavbarLinkStyled>
                 <NavbarLinkStyled to={"/friends"}>Friends</NavbarLinkStyled>
                 <NavbarLinkStyled to={"/chat"}>Samurai-chat</NavbarLinkStyled>

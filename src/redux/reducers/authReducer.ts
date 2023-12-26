@@ -1,45 +1,54 @@
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+
 const initialState = {
     userId: null,
     email: null,
     login: null,
     isAuth: false,
     captchaUrl: null
-}
+} as InitialStateType
 
 type InitialStateType = {
-    userId: number | null
+    userId: null | number
     email: string | null
     login: string | null
     isAuth: boolean
     captchaUrl: string | null
 }
-export const authReducer = (state: InitialStateType = initialState, action: ActionType) : InitialStateType => {
-    switch (action.type) {
-        case 'SET-USER-DATA':
-            return {...action.data, isAuth: true, captchaUrl: null }
-        case 'LOGOUT':{
-            return {...state, isAuth: false}
+
+const slice = createSlice({
+    initialState,
+    name: 'auth',
+    reducers: {
+        setUserInfo: (state, action: PayloadAction<UserInfoType>) => {
+            state.userId = action.payload.userId
+            state.email = action.payload.email
+            state.login = action.payload.login
+            state.isAuth = true
+            state.captchaUrl = null
+        },
+        logout: (state, action: PayloadAction) => {
+            state.userId = null
+            state.email = null
+            state.login = null
+            state.isAuth = false
+            state.captchaUrl = null
+        },
+        getCaptchaUrl: (state, action: PayloadAction<{ captchaUrl: string }>) => {
+            state.captchaUrl = action.payload.captchaUrl
         }
-        case 'GET-CAPTCHA-URL':{
-            return {...state, captchaUrl: action.captchaUrl}
-        }
-        default:
-            return state
+    },
+    selectors: {
+        userId: sliceState => sliceState.userId,
+        email: sliceState => sliceState.email,
+        login: sliceState => sliceState.login,
+        isAuth: sliceState => sliceState.isAuth,
+        captchaUrl: sliceState => sliceState.captchaUrl
     }
-}
+})
 
-type ActionType = SetUserDataActionType | LogoutActionType | GetCaptchaUrlActionType
+export const authActions = slice.actions
+export const authReducer = slice.reducer
+export const authSelectors = slice.selectors
+type UserInfoType = { userId: number, email: string, login: string }
 
-type SetUserDataActionType = ReturnType<typeof setAuthUserDataAC>
-export const setAuthUserDataAC = (userId: number, email: string, login: string) => {
-    return {
-        type: "SET-USER-DATA",
-        data: {userId, email, login}
-    } as const
-}
-
-type LogoutActionType = ReturnType<typeof logoutAC>
-export const logoutAC = () => ({type: "LOGOUT"} as const)
-
-type GetCaptchaUrlActionType = ReturnType<typeof getCaptchaUrlAC>
-export const getCaptchaUrlAC = (captchaUrl: string) => ({type: "GET-CAPTCHA-URL", captchaUrl} as const)

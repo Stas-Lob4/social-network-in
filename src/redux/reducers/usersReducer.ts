@@ -1,3 +1,6 @@
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {usersThunks} from '../thunks/usersThunks';
+
 export type UserType = {
     name: string,
     id: number,
@@ -9,81 +12,85 @@ export type UserType = {
     followed: boolean
 }
 
-type FollowType = ReturnType<typeof followAC>
-type UnfollowType = ReturnType<typeof unfollowAC>
-type SetUserType = ReturnType<typeof setUsersAC>
-type SetCurrentPageType = ReturnType<typeof setCurrentPageAC>
-type SetUsersTotalCountType = ReturnType<typeof setUsersTotalCountAC>
-type ToggleIsFollowingProgressAction = ReturnType<typeof toggleIsFollowingProgressAC>
-type ActionType = FollowType | UnfollowType | SetUserType | SetCurrentPageType | SetUsersTotalCountType
-     | ToggleIsFollowingProgressAction
-
 let initialState = {
     users: [],
     pageSize: 10,
-    userTotalCount: 0,
+    usersTotalCount: 0,
     currentPage: 0,
     followingInProgress: []
-}
+} as InitStateType
 
 type InitStateType = {
     users: UserType[]
     pageSize: number,
-    userTotalCount: number,
+    usersTotalCount: number,
     currentPage: number,
     followingInProgress: number[]
 }
-export const usersReducer = (state: InitStateType = initialState, action: ActionType): InitStateType => {
-    switch (action.type) {
-        case "FOLLOW":
-            return {
-                ...state,
-                users: state.users.map( u =>  {
-                    if (u.id === action.userId) {
+
+const slice = createSlice({
+    name: 'users',
+    initialState,
+    reducers: {
+        follow: (state, action: PayloadAction<{ userId: number }>) => {
+            state.users = state.users.map(u => {
+                if (u.id === action.payload.userId) {
+                    return {...u, followed: true}
+                }
+                return u;
+            })
+        },
+        unfollow: (state, action: PayloadAction<{ userId: number }>) => {
+            state.users = state.users.map(u => {
+                if (u.id === action.payload.userId) {
+                    return {...u, followed: false}
+                }
+                return u;
+            })
+        },
+        setUsers: (state, action: PayloadAction<{ users: UserType[] }>) => {
+            state.users = action.payload.users
+        },
+        setCurrentPage: (state, action: PayloadAction<{ currentPage: number }>) => {
+            state.currentPage = action.payload.currentPage
+        },
+        setUsersTotalCount: (state, action: PayloadAction<{ usersTotalCount: number }>) => {
+            state.usersTotalCount = action.payload.usersTotalCount
+        },
+        toggleIsFollowingProgress:
+            (state, action: PayloadAction<{ isFetching: boolean, userId: number }>) => {
+                state.followingInProgress = action.payload.isFetching
+                        ? [...state.followingInProgress, action.payload.userId]
+                        : state.followingInProgress.filter(id => id != action.payload.userId)
+                }
+    },
+    extraReducers: builder => {
+        builder
+            .addCase(usersThunks.fetchUsers.fulfilled, (state, action) => {
+                state.users = action.payload.users
+                state.usersTotalCount = action.payload.totalCount
+            })
+            .addCase(usersThunks.follow.fulfilled, (state, action) => {
+                state.users = state.users.map(u => {
+                    if (u.id === action.payload.userId) {
                         return {...u, followed: true}
                     }
                     return u;
                 })
-            }
-        case "UNFOLLOW":
-            return {
-                ...state,
-                users: state.users.map( u =>  {
-                    if (u.id === action.userId) {
+            })
+            .addCase(usersThunks.unfollow.fulfilled, (state, action) => {
+                state.users = state.users.map(u => {
+                    if (u.id === action.payload.userId) {
                         return {...u, followed: false}
                     }
                     return u;
                 })
-            }
-        case "SET-USERS": {
-            console.log('Add user')
-            return { ...state, users: [ ...action.users ]}
-        }
-        case 'SET-CURRENT-PAGE':{
-            return {...state, currentPage: action.currentPage}
-        }
-        case 'SET-USER-TOTAL-COUNT':{
-            return {...state, userTotalCount: action.totalUsersCount}
-        }
-        case 'TOGGLE-IS-FOLLOWING-PROGRESS':{
-            return {
-                ...state,
-                followingInProgress : action.isFetching
-                    ? [...state.followingInProgress, action.userId]
-                    : state.followingInProgress.filter(id => id != action.userId)
-            }
-        }
-        default:
-            return state;
+            })
+            .addCase(usersThunks.fetchUserCountForPagination.fulfilled, (state, action) => {
+                state.users = action.payload.users
+                state.currentPage = action.payload.currentPage
+            })
     }
-}
-
-
-
-export const followAC = (userId: number) => ({type: "FOLLOW", userId }as const)
-export const unfollowAC = (userId: number) => ({type: "UNFOLLOW", userId }as const)
-export const setUsersAC = (users: UserType[]) => ({type: "SET-USERS", users }as const)
-export  const setCurrentPageAC = (currentPage: number) => ({type: 'SET-CURRENT-PAGE', currentPage} as const)
-export  const setUsersTotalCountAC = (totalUsersCount: number) => ({type: 'SET-USER-TOTAL-COUNT', totalUsersCount} as const)
-export const toggleIsFollowingProgressAC = (isFetching: boolean, userId: number) =>
-        ({type: 'TOGGLE-IS-FOLLOWING-PROGRESS', isFetching, userId} as const)
+})
+export const usersReducer = slice.reducer
+export const usersActions = slice.actions

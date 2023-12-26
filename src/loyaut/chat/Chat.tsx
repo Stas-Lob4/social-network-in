@@ -1,24 +1,29 @@
 import React, {useEffect} from 'react';
 import {TextareaBlock} from '../../component/TextareaBlock';
 import {HashLoader} from 'react-spinners';
-import {ChatStatusType} from '../../api/chatApi';
-import {useDispatch, useSelector} from 'react-redux';
-import {sendMessage, startMessagesListening, stopMessagesListening} from '../../redux/reducers/chatReducer';
-import {AppRootStateType} from '../../redux/store';
+import {useDispatch} from 'react-redux';
+import {
+    chatActions,
+    sendMessage,
+    startMessagesListening,
+    stopMessagesListening
+} from '../../redux/reducers/chatReducer';
+import {useAppSelector} from '../../app/store';
 import {MessagesList} from './MessagesList';
 import {ChatStyled, InputMessageContainer, LoaderContainer} from './ChatStyled';
 import {Navigate} from 'react-router-dom';
 
 
-export const Chat = () => {
-    const status = useSelector<AppRootStateType, ChatStatusType>(state => state.chatReducer.status)
-    const isAuth = useSelector<AppRootStateType, boolean>(state => state.authReducer.isAuth)
+export const Chat = React.memo(() => {
+    const status = useAppSelector(state => state.chatReducer.status)
+    const isAuth = useAppSelector(state => state.authReducer.isAuth)
     const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(startMessagesListening())
         return () => {
             dispatch(stopMessagesListening())
+            dispatch(chatActions.clearMessages())
         }
     }, []);
 
@@ -34,14 +39,12 @@ export const Chat = () => {
                 <HashLoader size={250}/>
             </LoaderContainer>
         </ChatStyled>
-    }
-    if (status === 'error') {
+    }else if (status === 'error') {
         return <ChatStyled>
             {status === 'error' && <div>Some error occured. Please refresh the page</div>}
         </ChatStyled>
-    }
-    if(!isAuth){
-        return <Navigate to={'/'}/>
+    } else if(!isAuth){
+        return <Navigate to={'/login'}/>
     }
 
     return (
@@ -52,6 +55,6 @@ export const Chat = () => {
             </InputMessageContainer>
         </ChatStyled>
     );
-};
+})
 
 

@@ -1,48 +1,43 @@
 import React, {FC} from 'react';
-import {ProfileType} from '../../../redux/reducers/profileReducer';
 import user_icon from '../../../assets/img/user-icon.jpg'
 import {ProfileStatus} from './ProfileStatus';
-import {
-    ContactsBox, ContactsItem, ContactsList, ContactsTitle,
-    ProfileImg,
-    ProfileInfoBox,
-    ProfileInfoContainer,
-    ProfileInfoStyled,
-    ProfileTitle
-} from './ProfileInfoStyled';
-import {useSelector} from 'react-redux';
-import {AppRootStateType} from '../../../redux/store';
-import {UserType} from '../../../redux/reducers/usersReducer';
+import {ProfileImg, ProfileInfoBox, ProfileInfoContainer, ProfileInfoStyled, ProfileTitle} from './ProfileInfoStyled';
+import {useAppSelector} from '../../../app/store';
 import styled from 'styled-components';
 
 
 type ProfileInfoPropsType = {
-    profile: ProfileType
     setStatus: (status: string) => void
-    status: string
-    users: UserType[]
 }
 
 
-export const ProfileInfo: FC<ProfileInfoPropsType> = ({profile, setStatus, status, users}) => {
-    const myId = useSelector<AppRootStateType, number | null>(state => state.authReducer.userId)
+export const ProfileInfo: FC<ProfileInfoPropsType> = ({ setStatus}) => {
+    const meId = useAppSelector(state => state.authReducer.userId)
+    const profile = useAppSelector(state => state.profileReducer.profile)
 
 
     return (
         <ProfileInfoStyled>
             <ProfileInfoContainer>
-
                 <ProfileInfoBox>
-                    <ProfileImg src={profile.photos.large ? profile.photos.large : user_icon}/>
+                    <ProfileImg src={profile?.photos?.large ? profile.photos.large : user_icon}/>
                     <ProfileInfoData>
-                        <ProfileTitle>My name: {profile.fullName}</ProfileTitle>
-                        <ProfileStatus status={status} setStatus={setStatus}/>
-                        {profile.userId === myId
-                            ? <BoxTextStatus>Даже в самой худшей судьбе есть возможности для счастливых перемен.</BoxTextStatus>
-                            : <button>Follov</button>
-                        }
+                        {profile ? (
+                            <>
+                                <ProfileTitle>My name: {profile.fullName}</ProfileTitle>
+                                <ProfileStatus setStatus={setStatus} isUsersStatus={meId === profile.userId}/>
+                                {profile.userId === meId ? (
+                                    <BoxTextStatus>
+                                        Даже в самой худшей судьбе есть возможности для счастливых перемен.
+                                    </BoxTextStatus>
+                                ) : (
+                                    <button>Follow</button>
+                                )}
+                            </>
+                        ) : (
+                            <div>Loading...</div>
+                        )}
                     </ProfileInfoData>
-
                 </ProfileInfoBox>
             </ProfileInfoContainer>
         </ProfileInfoStyled>

@@ -1,55 +1,48 @@
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {dialogsThunks} from '../thunks/dialogsThunk';
+
 const initialState: DialogsType = {
     dialogs: [],
     messages: []
 }
 
-export const dialogReducer = (state: DialogsType = initialState, action: ActionDialogReducerType): DialogsType => {
-    switch (action.type) {
-        case 'DELETE-MESSAGE':
-            return {...state, messages: state.messages.filter(m => m.id !== action.messageId)}
-        case 'UPDATE-NEW-MESSAGE-TEXT':
-            return state
-        case 'ADD-MESSAGE':
-            console.log('Tita')
-            return {...state, messages: [...state.messages, action.message]}
-        case 'SET-MESSAGES':
-            return {...state, messages: action.messages}
-        case 'SET-DIALOGS':
-            return {...state, dialogs: action.dialogs}
-        default:
-            return state
+
+const slice = createSlice({
+    name: 'dialog',
+    initialState,
+    reducers: {
+        deleteMessage: (state, action: PayloadAction<{messageId: string}>) => {
+            state.messages = state.messages.filter(m=> m.id !== action.payload.messageId)
+        },
+        addNewMessage: (state, action: PayloadAction<{message: MessageType}>) => {
+            state.messages = [...state.messages, action.payload.message]
+        },
+        setMessages: (state, action: PayloadAction<{messages: MessageType[]}>) => {
+            state.messages = action.payload.messages
+        },
+        setDialogs: (state, action: PayloadAction<{dialogs: DialogType[]}>) => {
+            state.dialogs = action.payload.dialogs
+        },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(dialogsThunks.fetchMessages.fulfilled, (state, action) => {
+                state.messages = action.payload.messages
+            })
+            .addCase(dialogsThunks.fetchDialogs.fulfilled, (state, action) => {
+                state.dialogs = action.payload.dialogs
+            })
+            .addCase(dialogsThunks.addMessage.fulfilled, (state, action) => {
+                state.messages = [...state.messages,action.payload.message]
+            })
+            .addCase(dialogsThunks.deleteMessage.fulfilled, (state, action) => {
+                state.messages = state.messages.filter(m=> m.id !== action.payload.messageId)
+            })
     }
-}
+})
+export const dialogReducer = slice.reducer
+export const dialogActions = slice.actions
 
-
-type DeleteMessageActionType = ReturnType<typeof deleteMessageAC>
-export const deleteMessageAC = (messageId: string) => {
-    return {type: 'DELETE-MESSAGE', messageId} as const
-}
-
-type UpdateNewMessageTextActionType = ReturnType<typeof updateNewMessageTextAC>
-export const updateNewMessageTextAC = (userId: number, text: string) => {
-    return {type: 'UPDATE-NEW-MESSAGE-TEXT', text, userId} as const
-}
-
-type AddMessageActionType = ReturnType<typeof addMessageAC>
-export const addMessageAC = (message: MessageType) => {
-    return {type: 'ADD-MESSAGE', message} as const
-}
-type SetDialogsActionType = ReturnType<typeof setDialogsAC>
-export const setDialogsAC = (dialogs: DialogType[]) => {
-    return {type: 'SET-DIALOGS', dialogs} as const
-}
-type SetMessagesActionType = ReturnType<typeof setMessagesAC>
-export const setMessagesAC = (messages: MessageType[]) => {
-    return {type: 'SET-MESSAGES', messages} as const
-}
-
-export type ActionDialogReducerType = DeleteMessageActionType
-    | AddMessageActionType
-    | UpdateNewMessageTextActionType
-    | SetDialogsActionType
-    | SetMessagesActionType
 
 
 export type DialogsType = {

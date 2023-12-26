@@ -1,25 +1,25 @@
 import {Dispatch} from 'redux';
-import {getCaptchaUrlAC, logoutAC, setAuthUserDataAC} from '../reducers/authReducer';
 import {authApi, LoginDataType} from '../../api/auth-api';
-import {AppDispatch} from '../store';
+import {AppDispatch} from '../../app/store';
 import {profileApi} from '../../api/profile-api';
-import {setUserProfileAC} from '../reducers/profileReducer';
-import {setInitialAppAC} from '../reducers/appReducer';
 import {securityApi} from '../../api/securityApi';
+import {appActions} from '../../app/appReducer';
+import {authActions} from '../reducers/authReducer';
+import {profileActions} from '../reducers/profileReducer';
 
 
-export const setAuthUserDataTC = () => (dispatch: Dispatch) => {
-    dispatch(setInitialAppAC(true))
+export const setAuthUserDataTC = () => (dispatch: AppDispatch) => {
+    dispatch(appActions.setAppInitialized({initialApp: true}))
     authApi.getAuth()
         .then(response => {
             if (response.data.resultCode === 0) {
-                dispatch(setAuthUserDataAC(response.data.data.id, response.data.data.email, response.data.data.login))
+                dispatch(authActions.setUserInfo({userId: response.data.data.id, email: response.data.data.email, login: response.data.data.login}))
                 profileApi.getProfile(response.data.data.id).then(res => {
-                    dispatch(setUserProfileAC(res.data))
+                    dispatch(profileActions.setUserProfile(res.data))
                 })
             }
         })
-        .finally(() => dispatch(setInitialAppAC(false)))
+        .finally(() => dispatch(appActions.setAppInitialized({initialApp: false})))
 }
 
 export const loginProfileTC = (data: LoginDataType) => (dispatch: AppDispatch) => {
@@ -37,7 +37,7 @@ export const logoutProfileTC = ()=> (dispatch: AppDispatch) => {
     authApi.deleteAuth()
         .then(res => {
             if(res.data.resultCode === 0){
-                dispatch(logoutAC())
+                dispatch(authActions.logout())
             }
     })
 }
@@ -45,5 +45,5 @@ export const logoutProfileTC = ()=> (dispatch: AppDispatch) => {
 export const getCaptchaUrlTC = () => async (dispatch: AppDispatch) => {
     const res = await securityApi.getCaptchaUrl()
     const captchaUrl = res.data.url
-    dispatch(getCaptchaUrlAC(captchaUrl))
+    dispatch(authActions.getCaptchaUrl(captchaUrl))
 }

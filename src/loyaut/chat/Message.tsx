@@ -1,7 +1,7 @@
 import React from 'react';
 import {ChatMessageType} from '../../api/chatApi';
 import {useSelector} from 'react-redux';
-import {AppRootStateType} from '../../redux/store';
+import {AppRootStateType, useAppSelector} from '../../app/store';
 import {
     MessageBoxText,
     MessageItem,
@@ -14,6 +14,7 @@ import users_logo from '../../assets/img/user-icon.jpg'
 
 export const Message: React.FC<{ message: ChatMessageType, key: number }> = React.memo(({message, key}) => {
     const userId = useSelector<AppRootStateType, number | null>(state => state.authReducer.userId)
+    let messages = useAppSelector(state => state.chatReducer.messages)
 
     if (message.userId === userId) {
         return <MyMessageItem key={key}>

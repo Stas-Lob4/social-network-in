@@ -1,7 +1,7 @@
 import React from 'react';
 import {Header} from './Header';
 import {connect} from 'react-redux';
-import {AppDispatch, AppRootStateType} from '../../redux/store';
+import {AppDispatch, AppRootStateType} from '../../app/store';
 import {setAuthUserDataTC} from '../../redux/thunks/authThunk';
 
 type PropsType = {}

@@ -1,8 +1,26 @@
 import styled from 'styled-components';
 
 export const ProfileStyled = styled.section`
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    height: 92.5vh;
+    overflow-y: auto;
+    scrollbar-color: #d4aa70 #e4e4e4;
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #2d2d2b;
+        border-radius: 20px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 20px;
+        background-image: linear-gradient(180deg, #50474a 0%, #6a779f 99%);
+        //box-shadow: inset 2px 2px 5px 0 rgba(#fff , 0.5);
+    }
 `
 
 export const ProfileContainer = styled.div`

@@ -1,12 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {useSelector} from 'react-redux';
-import {AppRootStateType} from '../../redux/store';
-import {ChatMessageType} from '../../api/chatApi';
+import {useAppSelector} from '../../app/store';
 import {Message} from './Message';
 import {ChatMessagesList} from './ChatStyled';
 
-export const MessagesList: React.FC = () => {
-    let messages = useSelector<AppRootStateType, ChatMessageType[]>(state => state.chatReducer.messages)
+export const MessagesList: React.FC = React.memo(() => {
+    let messages = useAppSelector(state => state.chatReducer.messages)
     const messagesAnchorRef = useRef<HTMLDivElement>(null);
     const [isAutoScroll, setIsAutoScroll] = useState(true)
 
@@ -32,4 +30,4 @@ export const MessagesList: React.FC = () => {
             <div ref={messagesAnchorRef}></div>
         </ChatMessagesList>
     </div>
-}
+})

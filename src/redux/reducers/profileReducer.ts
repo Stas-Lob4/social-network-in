@@ -1,6 +1,8 @@
 import {v1} from 'uuid';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {profileThunks} from '../thunks/profileThunks';
 
-const initState: ProfilePageType =  {
+const initialState = {
     profile: null,
     posts: [
         {id: v1(), text: 'Hello World!', likeCount: 11},
@@ -9,51 +11,46 @@ const initState: ProfilePageType =  {
         {id: v1(), text: 'Hello World!', likeCount: 1},
     ],
     status: ''
-}
+} as ProfilePageType
 
-export const profileReducer = (state = initState, action: ActionProfileReducerType) => {
-    switch (action.type) {
-        case 'ADD-POST' :
-            return {...state, posts: [...state.posts, {id: v1(), text: action.text, likeCount: 0}]}
-        case 'REMOVE-POST':
-            return {...state, posts: state.posts.filter(p => p.id !== action.id)}
-        case 'UPDATE-NEW-POST-TEXT':
-            return {...state, newPostText: action.text}
-        case 'SET-USER-PROFILE':{
-            return {...state, profile: {...action.profile}}
+const slice = createSlice({
+    name: 'profile',
+    initialState,
+    reducers: {
+        addPost: (state, action: PayloadAction<{ text: string }>) => {
+            state.posts = [...state.posts, {id: v1(), text: action.payload.text, likeCount: 0}]
+        },
+        updatePost: (state, action: PayloadAction<{ text: string, postId: string }>) => {
+            state.posts = state.posts.map(p => p.id === action.payload.postId ? {...p, text: action.payload.text} : p)
+        },
+        removePost: (state, action: PayloadAction<{ id: string }>) => {
+            state.posts = state.posts.filter(p => p.id !== action.payload.id)
+        },
+        setUserProfile: (state, action: PayloadAction<{ profile: ProfileType }>) => {
+            state.profile = action.payload.profile
+        },
+        setUserStatus: (state, action: PayloadAction<{ status: string }>) => {
+            state.status = action.payload.status
         }
-        case 'SET-USER-STATUS':{
-            return {...state, status: action.status}
-        }
-        default:
-            return state
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(profileThunks.fetchUserProfile.fulfilled, (state, action) => {
+                state.profile = action.payload.profile
+            })
+            .addCase(profileThunks.fetchUserStatusProfile.fulfilled, (state, action) => {
+                state.status = action.payload.status
+            })
+            .addCase(profileThunks.updateUserStatusProfile.fulfilled, (state, action) => {
+                state.status = action.payload.status
+            })
     }
-}
+})
 
+export const profileReducer = slice.reducer
+export const profileActions = slice.actions
+export const profileSelectors = slice.selectors
 
-type AddPostActionType = ReturnType<typeof addPostAC>
-export const addPostAC = (text: string) => {
-    return {type: 'ADD-POST', text} as const
-}
-type RemovePostActionType = ReturnType<typeof removePostAC>
-export const removePostAC = (id: string) => {
-    return {type: 'REMOVE-POST', id} as const
-}
-
-type UpdateNewPostTextActionType = ReturnType<typeof updateNewPostTextAC>
-export const updateNewPostTextAC = (text: string) => {
-    return {type: 'UPDATE-NEW-POST-TEXT', text} as const
-}
-
-type SetUserProfileActionType = ReturnType<typeof setUserProfileAC>
-export const setUserProfileAC = (profile: ProfileType) => {
-    return {type: 'SET-USER-PROFILE', profile} as const
-}
-
-type SetUserStatusActionType = ReturnType<typeof setUserStatusAC>
-export const setUserStatusAC = (status: string) => {
-    return {type: 'SET-USER-STATUS', status} as const
-}
 
 export type PostType = {
     id: string
@@ -63,16 +60,7 @@ export type PostType = {
 
 export type ProfileType = {
     aboutMe: string | null,
-    contacts: {
-        facebook: string | null,
-        website: string | null,
-        vk: string | null,
-        twitter: string | null,
-        instagram: string | null,
-        youtube: string | null,
-        github: string | null,
-        mainLink: string | null
-    },
+    contacts: ProfileContactsType
     lookingForAJob: boolean,
     lookingForAJobDescription: string | null,
     fullName: string,
@@ -83,14 +71,19 @@ export type ProfileType = {
     }
 }
 
+export type ProfileContactsType = {
+    facebook: string | null,
+    website: string | null,
+    vk: string | null,
+    twitter: string | null,
+    instagram: string | null,
+    youtube: string | null,
+    github: string | null,
+    mainLink: string | null
+}
+
 export type ProfilePageType = {
     profile: ProfileType | null
     posts: PostType[]
     status: string
 }
-
-export type ActionProfileReducerType = AddPostActionType
-    | UpdateNewPostTextActionType
-    | SetUserProfileActionType
-    | SetUserStatusActionType
-    | RemovePostActionType

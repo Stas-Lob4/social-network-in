@@ -7,6 +7,7 @@ let ws: WebSocket | null = null
 type EventsNamesType = 'messages-received' | 'status-changed'
 
 const closeHandler = () => {
+    notifySubscribersAboutStatus('pending')
     setTimeout(createChannel, 3000)
 }
 

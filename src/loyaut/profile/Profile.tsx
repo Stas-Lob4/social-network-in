@@ -1,52 +1,76 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import borderImage from './../../assets/img/border.png'
 import {MyPostContainer} from './Posts/PostsContainer';
-import {ProfileType} from '../../redux/reducers/profileReducer';
 import {HashLoader} from 'react-spinners';
 import {ProfileInfo} from './ProfileInfo/ProfileInfo';
 import {BorderImage, PreloaderContainer, ProfileContainer, ProfileStyled} from './ProfileStyled';
-import {ContactsBox, ContactsItem, ContactsList, ContactsTitle} from './ProfileInfo/ProfileInfoStyled';
+import {ContactsBox, ContactsTitle} from './ProfileInfo/ProfileInfoStyled';
 import styled from 'styled-components';
-import {UserType} from '../../redux/reducers/usersReducer';
+import {useActions} from '../../hooks/useActions';
+import {profileThunks} from '../../redux/thunks/profileThunks';
+import {Navigate, redirect, useParams} from 'react-router-dom';
+import {useAppSelector} from '../../app/store';
+import {ProfileContacts} from './ProfileInfo/ProfileConstacts';
 
 
-type PropsType = {
-    profile: ProfileType | null
-    setStatus: (status: string) => void
-    status: string
-    users: UserType[]
-}
-export const Profile: FC<PropsType> = (props) => {
+type PropsType = {}
+export const Profile: FC<PropsType> = () => {
+    const {
+        fetchUserProfile,
+        fetchUserStatusProfile,
+        updateUserStatusProfile
+    } = useActions({...profileThunks})
 
+    const {userId} = useParams<{ userId: string }>();
 
-    return (
+    const profile = useAppSelector(state => state.profileReducer.profile)
+    const status = useAppSelector(state => state.profileReducer.status)
+    const profileId = useAppSelector(state => state.authReducer.userId)
+    const isAuth = useAppSelector(state => state.authReducer.isAuth)
+
+    const updateStatusProfile = (status: string) => {
+        updateUserStatusProfile(status)
+    }
+
+    let id = userId ? +userId : profileId;
+
+    useEffect(() => {
+        console.log('Profile', userId)
+        if (!id) {
+            redirect('/login')
+        } else {
+            fetchUserProfile(id)
+            fetchUserStatusProfile(id)
+        }
+    }, [id]);
+
+   if(!isAuth){
+        return <Navigate to={'/login'}/>
+    } else if (status === 'loading') {
+        return <HashLoader size={250}/>
+    }
+
+        return (
         <ProfileStyled>
-                {props.profile === null ?
-                    <PreloaderContainer>
-                        <HashLoader
-                            color={'red'}
-                            size={250}
-                        />
-                    </PreloaderContainer>
-                    : <ProfileContainer>
-                        <BorderImage src={borderImage}/>
-                        <ProfileInfo users={props.users} profile={props.profile} setStatus={props.setStatus} status={props.status}/>
-                        <SectionBox>
-                            <ContactsBox>
-                                <ContactsTitle>Contacts:</ContactsTitle>
-                                <ContactsList>{
-                                    Object.entries(props.profile.contacts).map(([key, value]) => {
-                                    return <ContactsItem>
-                                        <b>{key}:</b>
-                                        {value ? <a href={value ? value : undefined}>_{value}</a> : ' none'}
-                                    </ContactsItem>
-                                })}</ContactsList>
-                            </ContactsBox>
-                            <MyPostContainer/>
-                        </SectionBox>
-
-                    </ProfileContainer>
-                }
+            {profile === null ?
+                <PreloaderContainer>
+                    <HashLoader
+                        color={'red'}
+                        size={250}
+                    />
+                </PreloaderContainer>
+                : <ProfileContainer>
+                    <BorderImage src={borderImage}/>
+                    <ProfileInfo setStatus={updateStatusProfile}/>
+                    <SectionBox>
+                        <ContactsBox>
+                            <ContactsTitle>Contacts:</ContactsTitle>
+                            <ProfileContacts/>
+                        </ContactsBox>
+                        <MyPostContainer/>
+                    </SectionBox>
+                </ProfileContainer>
+            }
         </ProfileStyled>
     );
 };

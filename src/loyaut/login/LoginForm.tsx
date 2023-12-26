@@ -115,8 +115,8 @@ export const CheckBox = styled.div`
 
 export const InputCheckBox = styled.input`
  &[type="checkbox"] {
-     width: 20px; /* Устанавливает ширину чекбокса */
-     height: 20px; /* Устанавливает высоту чекбокса */
+     width: 20px;
+     height: 20px;
  }
 `
 export const TitleCheckbox = styled.h4`

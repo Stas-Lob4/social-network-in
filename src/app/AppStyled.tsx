@@ -8,6 +8,7 @@ export const AppStyled = styled.div`
     width: 100%;
     min-height: 100vh;
     overflow: auto;
+    
 `
 export const AppHeaderStyled = styled.header`
   max-width: 1150px;
@@ -25,9 +26,12 @@ export const AppMainStyled = styled.main`
   align-items: stretch; /* Добавьте это свойство */
 `
 export const AppFooterStyled = styled.footer`
-  width: 100%;
-  max-width: 1150px;
-  min-height: 50px;
+    width: 100%;
+    max-width: 1150px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `
 
 export const AppMainRoutesStyled = styled.div`

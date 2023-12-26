@@ -1,12 +1,18 @@
 import React, {ChangeEvent, useState, KeyboardEvent} from 'react';
 import {Post} from './Post/Post';
 import {ButtonInput, InputBox, PostList, PostsContainer, PostsStyled, PostsTitle, TextArea} from './PostsStyled';
-import {MyPostPropsType} from './PostsContainer';
+import {ProfilePageType} from '../../../redux/reducers/profileReducer';
+import user_photo from '../../../assets/img/user-icon.jpg'
+import {useAppSelector} from '../../../app/store';
 
 
-export const Posts: React.FC<MyPostPropsType> = React.memo(({stateProfile, addPost, profileImage}) => {
 
+type PostsPropsType = {
+    addPost: (text: string) => void
+}
+export const Posts: React.FC<PostsPropsType> = React.memo( ({addPost})=> {
     const [text, setText] = useState<string>('')
+    const stateProfile = useAppSelector(state => state.profileReducer)
 
     const onClickHandler = () => {
         if (text !== '') {
@@ -28,7 +34,9 @@ export const Posts: React.FC<MyPostPropsType> = React.memo(({stateProfile, addPo
         }
     }
 
-    const mapMyPosts = stateProfile.posts.map(m =>
+    let profileImage = stateProfile.profile?.photos.large
+
+    const mapMyPosts = stateProfile?.posts.map(m =>
         <Post id={m.id} text={m.text} likeCount={m.likeCount} profileImage={profileImage}/>)
     return (
         <PostsStyled>

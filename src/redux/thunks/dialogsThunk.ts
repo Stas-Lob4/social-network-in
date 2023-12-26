@@ -1,66 +1,69 @@
-import {AppDispatch} from '../store';
 import {dialogsApi} from '../../api/dialogsApi';
-import {addMessageAC, deleteMessageAC, setDialogsAC, setMessagesAC} from '../reducers/dialogReducer';
-import {setStatusAppAC} from '../reducers/appReducer';
-import {handleServerAppError, handleServerNetworkError} from '../../utils';
+import {createAppAsyncThunk, handleServerAppError, thunkTryCatch} from '../../utils';
+import {DialogType, MessageType} from '../reducers/dialogReducer';
+import {ResultCode} from '../../enums';
 
-export const setDialogsTC = () => async (dispatch: AppDispatch) => {
-    console.log('dialogs')
-    try {
-        dispatch(setStatusAppAC('loading'))
-        const res = await dialogsApi.getDialog()
-        console.log('dialogs', res.data)
-        dispatch(setDialogsAC(res.data))
-        dispatch(setStatusAppAC('succeeded'))
 
-    } catch (e) {
-        handleServerNetworkError(e, dispatch)
-    }
+const fetchDialogs = createAppAsyncThunk<{ dialogs: DialogType[] }, void>(
+    'dialog/fetchDialogs',
+    async (_, thunkAPI) => {
+        return thunkTryCatch(thunkAPI, async () => {
+            const res = await dialogsApi.getDialog()
+            return {dialogs: res.data}
+        })
+    },
+)
 
-}
+const fetchMessages = createAppAsyncThunk<{ messages: MessageType[] }, number>(
+    'dialog/fetchMessages',
+    async (id, thunkAPI) => {
+        return thunkTryCatch(thunkAPI, async () => {
+            const res = await dialogsApi.getMessages(id)
+            return {messages: res.data.items}
+        })
+    },
+)
 
-export const setMessagesTC = (id: number) => async (dispatch: AppDispatch) => {
-    try {
-        console.log('messages', id)
-        const res = await dialogsApi.getMessages(id)
-        dispatch(setMessagesAC(res.data.items))
-    } catch (e) {
-        handleServerNetworkError(e, dispatch)
-    }
-}
+const addMessage = createAppAsyncThunk<{ message: MessageType }, { id: number, text: string }>(
+    'dialog/addMessage',
+    async (data, thunkAPI) => {
+        const {dispatch, rejectWithValue} = thunkAPI
+        return thunkTryCatch(thunkAPI, async () => {
+            const res = await dialogsApi.addMessage(data.id, {body: data.text})
+            if (res.data.resultCode === ResultCode.Success) {
+                const message = {
+                    id: res.data.data.message.id,
+                    body: res.data.data.message.body,
+                    translatedBody: res.data.data.message.translatedBody,
+                    addedAt: res.data.data.message.addedAt,
+                    senderId: res.data.data.message.senderId,
+                    senderName: res.data.data.message.senderName,
+                    recipientId: res.data.data.message.recipientId,
+                    viewed: false,
+                }
+                return {message}
+            } else {
+                handleServerAppError(res.data, dispatch)
+                return rejectWithValue(null)
+            }
+        })
+    },
+)
 
-export const addMessageTC = (id: number, text: string) => async (dispatch: AppDispatch) => {
-    try {
-        console.log('messages', id)
-        const res = await dialogsApi.addMessage(id, {body: text})
-        console.log(res.data.data.message)
-        const mes = {
-            id: res.data.data.message.id,
-            body: res.data.data.message.body,
-            translatedBody: res.data.data.message.translatedBody,
-            addedAt: res.data.data.message.addedAt,
-            senderId: res.data.data.message.senderId,
-            senderName: res.data.data.message.senderName,
-            recipientId: res.data.data.message.recipientId,
-            viewed: false,
-        }
-        dispatch(addMessageAC(mes))
-    } catch (e) {
-        handleServerNetworkError(e, dispatch)
-    }
-}
+const deleteMessage = createAppAsyncThunk<{messageId: string}, string>(
+    'dialog/deleteMessage',
+    async (messageId, thunkAPI) => {
+        const {dispatch, rejectWithValue} = thunkAPI
+        return thunkTryCatch(thunkAPI, async () => {
+            const res = await dialogsApi.deleteMessage(messageId)
+            if (res.data.resultCode === ResultCode.Success) {
+                return {messageId}
+            } else {
+                handleServerAppError(res.data, dispatch)
+                return rejectWithValue(null)
+            }
+        })
+    },
+)
 
-export const deleteMessageTC = (messageId: string) => async (dispatch: AppDispatch) => {
-    try {
-        console.log('messages', messageId)
-        const res = await dialogsApi.deleteMessage(messageId)
-        console.log('delete', res.data)
-        if(res.data.resultCode === 0){
-            dispatch(deleteMessageAC(messageId))
-        } else {
-            handleServerAppError(res.data, dispatch)
-        }
-    } catch (e) {
-        handleServerNetworkError(e, dispatch)
-    }
-}
+export const dialogsThunks = {fetchDialogs, fetchMessages, addMessage, deleteMessage}

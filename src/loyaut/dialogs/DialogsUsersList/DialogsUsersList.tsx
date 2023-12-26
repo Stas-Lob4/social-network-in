@@ -1,13 +1,13 @@
 import React from 'react';
 import {DialogsUsersListStyled, NavLinkStyled} from './DialogsUsersListStyled';
-import {DialogType} from '../../../../redux/reducers/dialogReducer';
+import {useAppSelector} from '../../../app/store';
 
 export type DialogListPropsType = {
-    dialogs: DialogType[]
     onClickCallBack: (id: number) => void
 }
 
-export const DialogsUsersList: React.FC<DialogListPropsType> = ({dialogs, onClickCallBack}) => {
+export const DialogsUsersList: React.FC<DialogListPropsType> = ({onClickCallBack}) => {
+    const dialogs = useAppSelector(state => state.dialogReducer.dialogs)
     const onClickHandler = (id: number) => onClickCallBack(id)
     const blockUsers = dialogs.map(dialog => {
         return <NavLinkStyled key={dialog.id} to={`/dialogs/${dialog.id}`}
