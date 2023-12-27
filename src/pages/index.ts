@@ -1,6 +1,0 @@
-export { Users } from "./users/ui/Users"
-export { Profile } from "./profile/ui/Profile"
-export { Login } from "./login/ui/Login"
-export { Dialogs } from "./dialogs/ui/Dialogs"
-export { Chat } from "./chat/ui/Chat"
-export { Error } from "./error/Error"
