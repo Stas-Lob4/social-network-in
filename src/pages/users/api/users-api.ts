@@ -4,8 +4,12 @@ export const usersApi = {
   getUsers() {
     return instance.get(`/users`)
   },
-  getCurrentPage(pageNumber: number, pageSize: number) {
-    return instance.get(`users?page=${pageNumber}&count=${pageSize}`)
+  getCurrentPage(pageNumber: number, pageSize: number, term: string = "", friend: boolean | null = null) {
+    console.log("API", pageNumber, pageSize, term, friend)
+    return instance.get(
+      `/users?page=${pageNumber}
+                        &count=${pageSize}&term=${term}` + (friend === null ? "" : `&friend=${friend}`),
+    )
   },
   follow(userId: number) {
     return instance.post(`follow/${userId}`)

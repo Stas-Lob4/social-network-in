@@ -8,7 +8,7 @@ import { MessagesList } from "./MessagesList"
 import { ChatStyled, InputMessageContainer, LoaderContainer } from "./ChatStyled"
 import { Navigate } from "react-router-dom"
 
-export const Chat: FC = React.memo(() => {
+export const Chat: FC = () => {
   const status = useAppSelector((state) => state.chatReducer.status)
   const isAuth = useAppSelector((state) => state.authReducer.isAuth)
   const dispatch = useDispatch()
@@ -49,4 +49,4 @@ export const Chat: FC = React.memo(() => {
       </InputMessageContainer>
     </ChatStyled>
   )
-})
+}

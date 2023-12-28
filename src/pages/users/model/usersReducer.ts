@@ -16,8 +16,12 @@ let initialState = {
   users: [],
   pageSize: 10,
   usersTotalCount: 0,
-  currentPage: 0,
+  currentPage: 1,
   followingInProgress: [],
+  filter: {
+    term: "",
+    friend: null as null | boolean,
+  },
 } as InitStateType
 
 type InitStateType = {
@@ -26,6 +30,10 @@ type InitStateType = {
   usersTotalCount: number
   currentPage: number
   followingInProgress: number[]
+  filter: {
+    term: string | ""
+    friend: null | boolean
+  }
 }
 
 const slice = createSlice({
@@ -88,8 +96,12 @@ const slice = createSlice({
       .addCase(usersThunks.fetchUserCountForPagination.fulfilled, (state, action) => {
         state.users = action.payload.users
         state.currentPage = action.payload.currentPage
+        state.filter = action.payload.filter
+        state.usersTotalCount = action.payload.usersTotalCount
       })
   },
 })
 export const usersReducer = slice.reducer
 export const usersActions = slice.actions
+
+export type FilterType = typeof initialState.filter
