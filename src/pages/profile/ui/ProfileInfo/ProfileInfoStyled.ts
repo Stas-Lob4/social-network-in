@@ -47,6 +47,21 @@ export const ContactsItem = styled.li`
     opacity: 0.2;
   }
 `
+export const ProfileInfoData = styled.div`
+  padding-top: 20px;
+  line-height: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
+
+export const BoxTextStatus = styled.b`
+  width: 230px;
+  background: white;
+  border-radius: 20px;
+  padding: 10px;
+  color: #262626;
+`
 
 export const ProfileInfoBox = styled.div`
   display: flex;

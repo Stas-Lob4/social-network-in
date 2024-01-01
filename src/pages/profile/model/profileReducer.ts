@@ -47,12 +47,14 @@ const slice = createSlice({
       .addCase(profileThunks.updateUserInfoProfile.fulfilled, (state, action) => {
         state.profile = { userId: action.payload.userId, photos: action.payload.photos, ...action.payload.updateData }
       })
+      .addCase(profileThunks.updateUserPhotoProfile.fulfilled, (state, action) => {
+        state.profile = action.payload.profile
+      })
   },
 })
 
 export const profileReducer = slice.reducer
 export const profileActions = slice.actions
-export const profileSelectors = slice.selectors
 
 export type PostType = {
   id: string

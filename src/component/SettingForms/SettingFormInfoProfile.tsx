@@ -1,11 +1,12 @@
 import React, { FC } from "react"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
-import { Button, ErrorMessage, FormContainer, FormInputContainer, StyledInput } from "../FilterForm/FIlterFormStyled"
+import { ErrorMessage, FormInputContainer, StyledInput } from "../FilterForm/FIlterFormStyled"
 import { useAppSelector } from "../../app/store"
 import { profileInfoSelector } from "../../pages/profile/model/profileSelectors"
 import { FlexWrap } from "../FlexWrap"
 import { StyledTextarea } from "./SettingFormStatusProfileStyled"
 import { UpdateDataInfoProfileType } from "../../pages/profile/api/profile-api"
+import { Button } from "../Button"
 
 export type FormData = {
   aboutMe: string | ""
@@ -277,7 +278,9 @@ export const SettingFormInfoProfile: FC<PropsType> = ({ setInfoProfile }) => {
           </FormInputContainer>
         )}
       />
-      <Button type="submit">save profile info</Button>
+      <Button type="submit" color={"green"}>
+        save profile info
+      </Button>
     </form>
   )
 }

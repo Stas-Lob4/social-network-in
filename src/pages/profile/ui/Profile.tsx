@@ -14,7 +14,13 @@ import { Preloader } from "../../../component/Preloader"
 import { UpdateDataInfoProfileType } from "../api/profile-api"
 
 export const Profile: FC = React.memo(() => {
-  const { fetchUserProfile, fetchUserStatusProfile, updateUserStatusProfile, updateUserInfoProfile } = useActions({
+  const {
+    fetchUserProfile,
+    fetchUserStatusProfile,
+    updateUserStatusProfile,
+    updateUserInfoProfile,
+    updateUserPhotoProfile,
+  } = useActions({
     ...profileThunks,
   })
 
@@ -31,6 +37,12 @@ export const Profile: FC = React.memo(() => {
   const updateInfoProfile = (updateData: UpdateDataInfoProfileType) => {
     if (profile !== null && profileId !== null) {
       updateUserInfoProfile({ updateData: updateData, userId: profileId, photos: profile?.photos })
+    }
+  }
+
+  const updatePhotoProfile = (photo: File) => {
+    if (profile !== null) {
+      updateUserPhotoProfile({ photo, userId: profile.userId })
     }
   }
 
@@ -58,7 +70,11 @@ export const Profile: FC = React.memo(() => {
         <Preloader />
       ) : (
         <ProfileContainer>
-          <ProfileInfo setStatus={updateStatusProfile} setInfoProfile={updateInfoProfile} />
+          <ProfileInfo
+            setStatus={updateStatusProfile}
+            setInfoProfile={updateInfoProfile}
+            setPhoto={updatePhotoProfile}
+          />
           <FlexWrap gap={"20px"}>
             <MyPostContainer />
           </FlexWrap>

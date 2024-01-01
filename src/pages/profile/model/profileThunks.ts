@@ -67,9 +67,34 @@ const updateUserInfoProfile = createAppAsyncThunk<
   })
 })
 
+const updateUserPhotoProfile = createAppAsyncThunk<
+  { profile: ProfileType },
+  {
+    photo: File
+    userId: number
+  }
+>("profile/updateUserPhotoProfile", async (props, thunkAPI) => {
+  const { dispatch, rejectWithValue } = thunkAPI
+  return thunkTryCatch(thunkAPI, async () => {
+    dispatch(appActions.setAppStatus({ status: "loading" }))
+    const res = await profileApi.updatePhotoProfile(props.photo)
+    console.log(res)
+    if (res.data.resultCode === ResultCode.Success) {
+      dispatch(appActions.setAppStatus({ status: "succeeded" }))
+      const newDataInfoProfile = await profileApi.getProfile(props.userId)
+      console.log("Profile", { profile: newDataInfoProfile.data })
+      return { profile: newDataInfoProfile.data }
+    } else {
+      handleServerAppError(res.data, dispatch)
+      return rejectWithValue(null)
+    }
+  })
+})
+
 export const profileThunks = {
   fetchUserProfile,
   fetchUserStatusProfile,
   updateUserStatusProfile,
   updateUserInfoProfile,
+  updateUserPhotoProfile,
 }
