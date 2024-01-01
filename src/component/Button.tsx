@@ -4,14 +4,13 @@ import styled from "styled-components"
 type PropsType = {
   disabled?: boolean
   children?: React.ReactNode
-  onClick: () => void
+  onClick?: () => void
+  type?: "button" | "submit" | "reset" | undefined
 } & ButtonStyledPropsType
 
-export const Button: FC<PropsType> = ({ children, onClick, color, disabled }) => {
-  const onClickHandler = () => onClick()
-
+export const Button: FC<PropsType> = ({ children, onClick, color, disabled, type }) => {
   return (
-    <ButtonStyled disabled={disabled} color={color} onClick={onClickHandler}>
+    <ButtonStyled type={type} disabled={disabled} color={color} onClick={onClick ? () => onClick() : () => {}}>
       {children}
     </ButtonStyled>
   )

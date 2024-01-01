@@ -44,6 +44,9 @@ const slice = createSlice({
       .addCase(profileThunks.updateUserStatusProfile.fulfilled, (state, action) => {
         state.status = action.payload.status
       })
+      .addCase(profileThunks.updateUserInfoProfile.fulfilled, (state, action) => {
+        state.profile = { userId: action.payload.userId, photos: action.payload.photos, ...action.payload.updateData }
+      })
   },
 })
 
@@ -58,31 +61,36 @@ export type PostType = {
 }
 
 export type ProfileType = {
-  aboutMe: string | null
+  aboutMe: string | ""
   contacts: ProfileContactsType
   lookingForAJob: boolean
-  lookingForAJobDescription: string | null
+  lookingForAJobDescription: "" | string
   fullName: string
   userId: number
   photos: {
-    small: string | null
-    large: string | null
+    small: null | string
+    large: null | string
   }
 }
 
+export type PhotosType = {
+  small: null | string
+  large: null | string
+}
+
 export type ProfileContactsType = {
-  facebook: string | null
-  website: string | null
-  vk: string | null
-  twitter: string | null
-  instagram: string | null
-  youtube: string | null
-  github: string | null
-  mainLink: string | null
+  facebook: string | ""
+  website: string | ""
+  vk: string | ""
+  twitter: string | ""
+  instagram: string | ""
+  youtube: string | ""
+  github: string | ""
+  mainLink: string | ""
 }
 
 export type ProfilePageType = {
-  profile: ProfileType | null
+  profile: null | ProfileType
   posts: PostType[]
   status: string
 }

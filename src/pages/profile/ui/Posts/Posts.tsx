@@ -4,31 +4,18 @@ import { ButtonInput, InputBox, PostList, PostsContainer, PostsStyled, PostsTitl
 import { ProfilePageType } from "../../model/profileReducer"
 import user_photo from "../../../../assets/img/user-icon.jpg"
 import { useAppSelector } from "../../../../app/store"
+import { TextareaBlock } from "../../../../component/TextareaBlock"
+import { TextAreaStyled } from "../../../../component/TextAreaStyled"
 
 type PostsPropsType = {
   addPost: (text: string) => void
 }
 export const Posts: React.FC<PostsPropsType> = React.memo(({ addPost }) => {
-  const [text, setText] = useState<string>("")
   const stateProfile = useAppSelector((state) => state.profileReducer)
 
-  const onClickHandler = () => {
+  const onClickHandler = (text: string) => {
     if (text !== "") {
       addPost(text)
-      setText("")
-    }
-  }
-
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const newText = e.currentTarget.value
-    if (newText !== "") {
-      setText(newText)
-    }
-  }
-
-  const onClickKeyHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      onClickHandler()
     }
   }
 
@@ -41,15 +28,16 @@ export const Posts: React.FC<PostsPropsType> = React.memo(({ addPost }) => {
     <PostsStyled>
       <PostsContainer>
         <PostsTitle>My posts</PostsTitle>
-        <InputBox>
-          <TextArea
-            placeholder={"Input new post"}
-            value={text}
-            onChange={onChangeHandler}
-            onKeyPress={onClickKeyHandler}
-          />
-          <ButtonInput onClick={onClickHandler}>+</ButtonInput>
-        </InputBox>
+        <TextAreaStyled onClick={onClickHandler} />
+        {/*<InputBox>*/}
+        {/*  <TextArea*/}
+        {/*    placeholder={"Input new post"}*/}
+        {/*    value={text}*/}
+        {/*    onChange={onChangeHandler}*/}
+        {/*    onKeyPress={onClickKeyHandler}*/}
+        {/*  />*/}
+        {/*  <ButtonInput onClick={onClickHandler}>+</ButtonInput>*/}
+        {/*</InputBox>*/}
         <PostList>{mapMyPosts}</PostList>
       </PostsContainer>
     </PostsStyled>

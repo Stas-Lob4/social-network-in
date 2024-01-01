@@ -1,19 +1,22 @@
 import React, { FC, useEffect } from "react"
-import borderImage from "../../../assets/img/border.png"
 import { MyPostContainer } from "./Posts/PostsContainer"
 import { HashLoader } from "react-spinners"
 import { ProfileInfo } from "./ProfileInfo/ProfileInfo"
-import { BorderImage, PreloaderContainer, ProfileContainer, ProfileStyled } from "./ProfileStyled"
+import { PreloaderContainer, ProfileContainer, ProfileStyled } from "./ProfileStyled"
 import { ContactsBox, ContactsTitle } from "./ProfileInfo/ProfileInfoStyled"
-import styled from "styled-components"
 import { useActions } from "../../../hooks/useActions"
 import { profileThunks } from "../model/profileThunks"
 import { Navigate, redirect, useParams } from "react-router-dom"
 import { useAppSelector } from "../../../app/store"
 import { ProfileContacts } from "./ProfileInfo/ProfileConstacts"
+import { FlexWrap } from "../../../component/FlexWrap"
+import { Preloader } from "../../../component/Preloader"
+import { UpdateDataInfoProfileType } from "../api/profile-api"
 
 export const Profile: FC = React.memo(() => {
-  const { fetchUserProfile, fetchUserStatusProfile, updateUserStatusProfile } = useActions({ ...profileThunks })
+  const { fetchUserProfile, fetchUserStatusProfile, updateUserStatusProfile, updateUserInfoProfile } = useActions({
+    ...profileThunks,
+  })
 
   const { userId } = useParams<{ userId: string }>()
 
@@ -24,6 +27,11 @@ export const Profile: FC = React.memo(() => {
 
   const updateStatusProfile = (status: string) => {
     updateUserStatusProfile(status)
+  }
+  const updateInfoProfile = (updateData: UpdateDataInfoProfileType) => {
+    if (profile !== null && profileId !== null) {
+      updateUserInfoProfile({ updateData: updateData, userId: profileId, photos: profile?.photos })
+    }
   }
 
   let id = userId ? +userId : profileId
@@ -41,33 +49,21 @@ export const Profile: FC = React.memo(() => {
   if (!isAuth) {
     return <Navigate to={"/login"} />
   } else if (status === "loading") {
-    return <HashLoader size={250} />
+    return <Preloader />
   }
 
   return (
     <ProfileStyled>
       {profile === null ? (
-        <PreloaderContainer>
-          <HashLoader color={"red"} size={250} />
-        </PreloaderContainer>
+        <Preloader />
       ) : (
         <ProfileContainer>
-          <BorderImage src={borderImage} />
-          <ProfileInfo setStatus={updateStatusProfile} />
-          <SectionBox>
-            <ContactsBox>
-              <ContactsTitle>Contacts:</ContactsTitle>
-              <ProfileContacts />
-            </ContactsBox>
+          <ProfileInfo setStatus={updateStatusProfile} setInfoProfile={updateInfoProfile} />
+          <FlexWrap gap={"20px"}>
             <MyPostContainer />
-          </SectionBox>
+          </FlexWrap>
         </ProfileContainer>
       )}
     </ProfileStyled>
   )
 })
-
-export const SectionBox = styled.div`
-  display: flex;
-  gap: 20px;
-`

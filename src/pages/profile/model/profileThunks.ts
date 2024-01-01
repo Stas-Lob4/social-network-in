@@ -1,5 +1,5 @@
-import { profileApi } from "../api/profile-api"
-import { ProfileType } from "./profileReducer"
+import { profileApi, UpdateDataInfoProfileType } from "../api/profile-api"
+import { PhotosType, ProfileType } from "./profileReducer"
 import { createAppAsyncThunk, handleServerAppError, thunkTryCatch } from "../../../utils"
 import { appActions } from "../../../app/appReducer"
 import { ResultCode } from "../../../common/enums"
@@ -46,4 +46,30 @@ const updateUserStatusProfile = createAppAsyncThunk<{ status: string }, string>(
     })
   },
 )
-export const profileThunks = { fetchUserProfile, fetchUserStatusProfile, updateUserStatusProfile }
+
+const updateUserInfoProfile = createAppAsyncThunk<
+  { updateData: UpdateDataInfoProfileType; userId: number; photos: PhotosType },
+  { updateData: UpdateDataInfoProfileType; userId: number; photos: PhotosType }
+>("profile/updateUserInfoProfile", async (props, thunkAPI) => {
+  const { dispatch, rejectWithValue } = thunkAPI
+  return thunkTryCatch(thunkAPI, async () => {
+    dispatch(appActions.setAppStatus({ status: "loading" }))
+    const res = await profileApi.updateInfoProfile(props.updateData)
+    console.log("Thunk", res.data)
+    if (res.data.resultCode === ResultCode.Success) {
+      dispatch(appActions.setAppStatus({ status: "succeeded" }))
+      console.log("UpdateInfoProfile", props.updateData)
+      return { updateData: props.updateData, userId: props.userId, photos: props.photos }
+    } else {
+      handleServerAppError(res.data, dispatch)
+      return rejectWithValue(null)
+    }
+  })
+})
+
+export const profileThunks = {
+  fetchUserProfile,
+  fetchUserStatusProfile,
+  updateUserStatusProfile,
+  updateUserInfoProfile,
+}

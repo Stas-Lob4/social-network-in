@@ -29,7 +29,7 @@ export const ProfileStatus: React.FC<PropsType> = ({ setStatus, isUsersStatus })
     return (
       <div>
         {!editMode ? (
-          <span onDoubleClick={activateEditMode}>{text ? text : "no status"}</span>
+          <span onDoubleClick={activateEditMode}>{text ? text : "samurai without status"}</span>
         ) : (
           <input onChange={onChangeHandler} autoFocus={true} onBlur={setStatusHandler} value={text} />
         )}
@@ -38,7 +38,7 @@ export const ProfileStatus: React.FC<PropsType> = ({ setStatus, isUsersStatus })
   }
   return (
     <div>
-      <span onDoubleClick={activateEditMode}>{text ? text : "no status"}</span>
+      <span onDoubleClick={activateEditMode}>{text ? text : "samurai without status"}</span>
     </div>
   )
 }

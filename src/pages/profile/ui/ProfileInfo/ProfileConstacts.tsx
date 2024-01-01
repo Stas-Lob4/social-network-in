@@ -2,6 +2,7 @@ import { ProfileContactsType } from "../../model/profileReducer"
 import { FC } from "react"
 import { ContactsItem, ContactsList } from "./ProfileInfoStyled"
 import { useAppSelector } from "../../../../app/store"
+import { Icon } from "../../../../component/Icon"
 
 type ProfileContactsPropsType = {}
 export const ProfileContacts: FC<ProfileContactsPropsType> = () => {
@@ -10,13 +11,14 @@ export const ProfileContacts: FC<ProfileContactsPropsType> = () => {
   if (typeof contacts !== "object" || contacts === null) {
     return <div>No contacts available</div>
   }
-
+  console.log("Contacts", contacts)
   return (
     <ContactsList>
       {Object.entries(contacts).map(([key, value]) => (
         <ContactsItem key={key}>
-          <b>{key}:</b>
-          {value ? <a href={value}>{value}</a> : <span> none</span>}
+          <a href={value ? value : ""}>
+            <Icon iconId={`${key}`} />
+          </a>
         </ContactsItem>
       ))}
     </ContactsList>
