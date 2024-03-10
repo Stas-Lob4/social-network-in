@@ -13,7 +13,6 @@
 - **react-scripts** 
 - **react-test-renderer** and **@types/react-test-renderer**
 - **redux**
-- **reduxjs/toolkit**
 - **redux-form** and **@types/redux-form**
 - **redux-thunk**
 - **reselect**
